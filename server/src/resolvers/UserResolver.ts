@@ -1,4 +1,5 @@
 import { User } from '../entity/User';
+import { Session } from '../entity/Session';
 import {
   Arg,
   Ctx,
@@ -10,8 +11,10 @@ import {
   Resolver,
 } from 'type-graphql';
 import argon2 from 'argon2';
-import { getConnection } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
 import { MyContext } from 'src/utils/MyContext';
+import { COOKIE_NAME } from '../constants';
+import { validateRegister } from '../utils/validateRegister';
 
 @InputType()
 export class UsernamePasswordInput {
@@ -57,7 +60,6 @@ export class UserResolver {
     return User.findOne(req.session.userId);
   }
 
-
   @Query(() => Boolean)
   async deleteAllUsers() {
     await User.delete({});
@@ -69,28 +71,55 @@ export class UserResolver {
     return User.find();
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async register(
-    @Arg('options') options: UsernamePasswordInput
-  ): Promise<User> {
+    @Arg('options') options: UsernamePasswordInput,
+    @Ctx() { req }: MyContext
+  ): Promise<UserResponse> {
+    const errors = validateRegister(options);
+    if (errors) {
+      return { errors };
+    }
+
     const { email, username, password } = options;
     const hashedPassword = await argon2.hash(password);
 
-    const result = await getConnection()
-      .createQueryBuilder()
-      .insert()
-      .into(User)
-      .values({
-        username: username,
-        email: email,
-        password: hashedPassword,
-      })
-      .returning('*')
-      .execute();
+    let user;
+    try {
+      const result = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values({
+          username: username,
+          email: email,
+          password: hashedPassword,
+        })
+        .returning('*')
+        .execute();
 
-    const user = result.raw[0];
+      user = result.raw[0];
+    } catch (err) {
+      //|| err.detail.includes("already exists")) {
+      // duplicate username error
+      if (err.code === '23505') {
+        return {
+          errors: [
+            {
+              field: 'username',
+              message: 'username already taken',
+            },
+          ],
+        };
+      }
+    }
 
-    return user;
+    // store user id session
+    // this will set a cookie on the user
+    // keep them logged in
+    req.session.userId = user.id;
+
+    return { user };
   }
 
   @Mutation(() => UserResponse)
@@ -120,14 +149,41 @@ export class UserResolver {
         errors: [{ field: 'password', message: 'incorrect password' }],
       };
     }
-    if (req.session.userID) {
-      console.log(req.session.userID);
-    }
 
     req.session.userId = user.id;
 
     return {
       user,
     };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { req, res }: MyContext) {
+    const sessions = await getRepository(Session)
+      .createQueryBuilder('session')
+      .select('session.sid')
+      .where('session.sess ::jsonb @> :sess', {
+        sess: { userId: req.session.userId },
+      })
+      .getRawMany();
+
+    const { session_sid } = sessions.find(
+      ({ session_sid }) => req.cookies[COOKIE_NAME].indexOf(session_sid) > 0
+    );
+
+    Session.delete({ sid: session_sid });
+
+    return new Promise((resolve) =>
+      req.session.destroy((err: any) => {
+        res.clearCookie(COOKIE_NAME);
+        if (err) {
+          console.log(err);
+          resolve(false);
+          return;
+        }
+
+        resolve(true);
+      })
+    );
   }
 }

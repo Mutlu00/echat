@@ -9,6 +9,7 @@ import { UserResolver } from './resolvers/UserResolver';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import cors from 'cors';
+import cookieParser from "cookie-parser"
 
 const PgSession = connectPgSimple(session);
 
@@ -26,6 +27,7 @@ const PgSession = connectPgSimple(session);
   });
 
   app.set('trust proxy', 1);
+  app.use(cookieParser())
   app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
   app.use(
     session({
