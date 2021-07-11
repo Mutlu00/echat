@@ -6,7 +6,6 @@ const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
     uri: 'http://localhost:4000/graphql',
     credentials: 'include',
-
     headers: {
       cookie:
         (typeof window === 'undefined'

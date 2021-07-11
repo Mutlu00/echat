@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { InputField } from '../components/input/InputField';
 import { Loading } from '../components/utils/Loading';
 import { Wrapper } from '../components/Wrapper';
-import { useLoginMutation} from '../generated/graphql';
+import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { withApollo } from '../utils/withApollo';
 
@@ -34,7 +34,19 @@ const Login: React.FC<registerProps> = ({}) => {
             }}
             onSubmit={async (values, { setErrors }) => {
               console.log(values);
-              const response = await login({ variables: values });
+              const response = await login({
+                variables: values,
+                update: (cache, { data }) => {
+                  cache.writeQuery<MeQuery>({
+                    query: MeDocument,
+                    data: {
+                      __typename: 'Query',
+                      me: data?.login.user,
+                    },
+                  });
+                  // cache.evict({ fieldName: 'posts:{}' });
+                },
+              });
               if (response.data?.login.errors) {
                 setErrors(toErrorMap(response.data.login.errors));
               } else if (response.data?.login.user) {

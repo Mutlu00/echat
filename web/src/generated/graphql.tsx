@@ -70,6 +70,11 @@ export type RegularErrorFragment = (
   & Pick<FieldError, 'field' | 'message'>
 );
 
+export type RegularUserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username'>
+);
+
 export type RegularUserResponseFragment = (
   { __typename?: 'UserResponse' }
   & { errors?: Maybe<Array<(
@@ -79,11 +84,6 @@ export type RegularUserResponseFragment = (
     { __typename?: 'User' }
     & RegularUserFragment
   )> }
-);
-
-export type RegularUserFragment = (
-  { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -128,7 +128,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & RegularUserFragment
+    & Pick<User, 'id' | 'username'>
   )> }
 );
 
@@ -255,10 +255,11 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const MeDocument = gql`
     query Me {
   me {
-    ...RegularUser
+    id
+    username
   }
 }
-    ${RegularUserFragmentDoc}`;
+    `;
 
 /**
  * __useMeQuery__

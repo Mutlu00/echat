@@ -1,3 +1,11 @@
-const Index = () => <div>hello World</div>;
+import { NavBar } from '../components/NavBar';
+import { withApollo } from '../utils/withApollo';
 
-export default Index;
+const Index = () => (
+  <>
+    <NavBar />
+    <div>hello World</div>
+  </>
+);
+
+export default withApollo({ ssr: false })(Index);
