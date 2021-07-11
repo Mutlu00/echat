@@ -17,7 +17,7 @@ import { COOKIE_NAME } from '../constants';
 import { validateRegister } from '../utils/validateRegister';
 
 @InputType()
-export class UsernamePasswordInput {
+export class EmailUsernamePasswordInput {
   @Field()
   email: string;
   @Field()
@@ -73,7 +73,7 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async register(
-    @Arg('options') options: UsernamePasswordInput,
+    @Arg('options') options: EmailUsernamePasswordInput,
     @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const errors = validateRegister(options);
