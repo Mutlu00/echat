@@ -1,19 +1,21 @@
+import { NavBar } from './NavBar';
+
 interface WrapperProps {
-  height?: 'full' | 'screen';
+  navbar?: boolean;
 }
 
 export const Wrapper: React.FC<WrapperProps> = ({
   children,
-  height = 'screen',
+  navbar = false,
 }) => {
   return (
-    <div
-      className={`
-      ${height === 'full' ? 'min-h-full' : 'min-h-screen'} 
-      bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8
-      `}
-    >
-      {children}
+    <div className="bg-gray-50 h-screen">
+      {navbar && <NavBar />}
+      <div
+        className="flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+      >
+        {children}
+      </div>
     </div>
   );
 };

@@ -1,11 +1,9 @@
 import 'tailwindcss/tailwind.css';
+import { NavBar } from '../components/NavBar';
 import './_app.css';
 
+const App = ({ Component, pageProps }: any) => {
+  return <Component {...pageProps} />;
+};
 
-function MyApp({ Component, pageProps }) {
-  return (
-      <Component {...pageProps} />
-  );
-}
-
-export default MyApp;
+export default App;

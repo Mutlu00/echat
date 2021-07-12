@@ -1,11 +1,14 @@
-import { NavBar } from '../components/NavBar';
+import { Wrapper } from '../components/Wrapper';
 import { withApollo } from '../utils/withApollo';
 
-const Index = () => (
-  <>
-    <NavBar />
-    <div>hello World</div>
-  </>
-);
+interface indexProps {}
+
+const Index: React.FC<indexProps> = ({}) => {
+  return (
+    <Wrapper navbar>
+      <div>Hello</div>
+    </Wrapper>
+  );
+};
 
 export default withApollo({ ssr: false })(Index);

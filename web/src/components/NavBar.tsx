@@ -16,82 +16,50 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
 
-  let body: JSX.Element | null = null;
+  let userMenu: JSX.Element | null = null;
 
   // data is loading
   if (loading) {
     // user not logged in
   } else if (!data?.me) {
-    body = (
-      <Menu.Items
-        static
-        className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
-      >
+    userMenu = (
+      <>
         <Menu.Item>
-          {({ active }) => (
-            <NextLink href='/register'>
-              <div
-                className={classNames(
-                  active ? 'bg-gray-100' : '',
-                  'block px-4 py-2 text-sm text-gray-700'
-                )}
-              >
-                Register
-              </div>
-            </NextLink>
-          )}
+          <NextLink href='/register'>
+            <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+              Register
+            </a>
+          </NextLink>
         </Menu.Item>
         <Menu.Item>
-          {({ active }) => (
-            <NextLink href='/login'>
-              <div
-                className={classNames(
-                  active ? 'bg-gray-100' : '',
-                  'block px-4 py-2 text-sm text-gray-700'
-                )}
-              >
-                Login
-              </div>
-            </NextLink>
-          )}
+          <NextLink href='/login'>
+            <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+              Login
+            </a>
+          </NextLink>
         </Menu.Item>
-      </Menu.Items>
+      </>
     );
   } else {
-    body = (
-      <Menu.Items
-        static
-        className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
-      >
+    userMenu = (
+      <>
         <Menu.Item>
-          {({ active }) => (
-            <div
-              className={classNames(
-                active ? 'bg-gray-100' : '',
-                'block px-4 py-2 text-sm text-gray-700'
-              )}
-            >
-              {`Hello ${data.me!.username}`}
-            </div>
-          )}
+          <div className='block px-4 py-2 text-sm text-gray-700'>
+            {`Hello ${data.me!.username}`}
+          </div>
         </Menu.Item>
         <Menu.Item>
-          {({ active }) => (
-            <div
-              onClick={async () => {
-                await logout();
-                await apolloClient.resetStore();
-              }}
-              className={classNames(
-                active ? 'bg-gray-100' : '',
-                'block px-4 py-2 text-sm text-gray-700'
-              )}
-            >
-              Logout
-            </div>
-          )}
+          <div
+            onClick={async () => {
+              await logout();
+              await apolloClient.resetStore();
+            }}
+            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+          >
+            Logout
+          </div>
         </Menu.Item>
-      </Menu.Items>
+      </>
     );
   }
 
@@ -102,9 +70,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
           <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
             <div className='relative flex justify-between h-16'>
               <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
-                {/* Mobile menu button */}
                 <Disclosure.Button className='inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
-                  <span className='sr-only'>Open main menu</span>
                   {open ? (
                     <XIcon className='block h-6 w-6' aria-hidden='true' />
                   ) : (
@@ -114,34 +80,31 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
               </div>
               <div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
                 <div className='flex-shrink-0 flex items-center'>
-                  <img
-                    className='block lg:hidden h-8 w-auto'
-                    src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
-                    alt='Workflow'
-                  />
-                  <img
-                    className='hidden lg:block h-8 w-auto'
-                    src='https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg'
-                    alt='Workflow'
-                  />
+                  <NextLink href='/'>
+                    <img
+                      className='block lg:hidden h-8 w-auto'
+                      src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
+                      alt='Workflow'
+                    />
+                  </NextLink>
+                  <NextLink href='/'>
+                    <img
+                      className='hidden lg:block h-8 w-auto'
+                      src='https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg'
+                      alt='Workflow'
+                    />
+                  </NextLink>
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <a
-                    href='#'
-                    className='border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                  >
-                    Dashboard
-                  </a>
+                  <NextLink href='/'>
+                    <a className='border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'>
+                      Home
+                    </a>
+                  </NextLink>
                 </div>
               </div>
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
-                <button className='bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
-                  <span className='sr-only'>View notifications</span>
-                  <BellIcon className='h-6 w-6' aria-hidden='true' />
-                </button>
 
-                {/* Profile dropdown */}
                 <Menu as='div' className='ml-3 relative'>
                   {({ open }) => (
                     <>
@@ -165,24 +128,28 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                         leaveFrom='transform opacity-100 scale-100'
                         leaveTo='transform opacity-0 scale-95'
                       >
-                        {body}
+                        <Menu.Items
+                          static
+                          className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
+                        >
+                          {userMenu}
+                        </Menu.Items>
                       </Transition>
                     </>
                   )}
                 </Menu>
+
               </div>
             </div>
           </div>
 
           <Disclosure.Panel className='sm:hidden'>
             <div className='pt-2 pb-4 space-y-1'>
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <a
-                href='#'
-                className='bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
-              >
-                Dashboard
-              </a>
+              <NextLink href='/'>
+                <a className='bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium'>
+                  Home
+                </a>
+              </NextLink>
             </div>
           </Disclosure.Panel>
         </>
