@@ -6,6 +6,7 @@ import { Wrapper } from '../components/Wrapper';
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { withApollo } from '../utils/withApollo';
+import NextLink from 'next/link';
 
 interface registerProps {}
 
@@ -68,14 +69,13 @@ const Login: React.FC<registerProps> = ({}) => {
                 />
 
                 <div className='text-sm'>
-                  <a
-                    href='#'
-                    className='font-medium text-indigo-600 hover:text-indigo-500'
-                  >
+                  <NextLink href='/forgot-password'>
+                    <a className='font-medium text-indigo-600 hover:text-indigo-500'>
                     Forgot your password?
-                  </a>
+                    </a>
+                  </NextLink>
                 </div>
-
+                
                 {isSubmitting ? (
                   <Loading />
                 ) : (

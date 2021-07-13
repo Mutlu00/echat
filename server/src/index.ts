@@ -10,6 +10,7 @@ import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import psl from 'psl';
 
 const PgSession = connectPgSimple(session);
 
@@ -41,7 +42,9 @@ const PgSession = connectPgSimple(session);
         httpOnly: true,
         sameSite: 'lax', // csrf
         secure: __prod__, // cookie only works in https
-        domain: __prod__ ? '.google.com' : undefined,
+        domain: __prod__
+          ? `.${psl.get(new URL(process.env.CORS_ORIGIN!).hostname)}` //get hostname without subdomain from cors_orgin .env
+          : undefined,
       },
     })
   );
@@ -56,11 +59,11 @@ const PgSession = connectPgSimple(session);
 
   server.applyMiddleware({ app, cors: false });
 
-  app.listen(parseInt(process.env.PORT!), () => {
+  app.listen(parseInt(process.env.SERVER_PORT!), () => {
     console.log(`
     🚀  Server is running!
-    🔉  Listening on port ${process.env.PORT}
-    📭  Query at https://localhost:${process.env.PORT}/graphql
+    🔉  Listening on port ${process.env.SERVER_PORT}
+    📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
   `);
   });
 })();

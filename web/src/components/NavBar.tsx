@@ -1,17 +1,13 @@
 import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import NextLink from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import { isServer } from '../utils/isServer';
 import { useApolloClient } from '@apollo/client';
 
-interface NavBarProps {}
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
-}
 
-export const NavBar: React.FC<NavBarProps> = ({}) => {
+export const NavBar: React.FC = ({}) => {
   const { data, loading } = useMeQuery({ skip: isServer() });
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();

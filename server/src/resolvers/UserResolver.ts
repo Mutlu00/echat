@@ -15,6 +15,8 @@ import { getConnection, getRepository } from 'typeorm';
 import { MyContext } from 'src/utils/MyContext';
 import { COOKIE_NAME } from '../constants';
 import { validateRegister } from '../utils/validateRegister';
+import { sendEmail } from '../utils/sendEmail';
+import { v4 } from 'uuid';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -185,5 +187,63 @@ export class UserResolver {
         resolve(true);
       })
     );
+  }
+
+  @Mutation(() => Boolean)
+  async forgotPassword(@Arg('email') email: string) {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      // the email is not in the db
+      return true;
+    }
+
+    user.resetToken = v4();
+    await user.save();
+
+    const html = `<a href="${process.env.CORS_ORIGIN}/change-password/${user.resetToken}">reset password</a>`;
+
+    sendEmail('Password Reset', email, html);
+    return true;
+  }
+
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Arg('token') token: string,
+    @Arg('newPassword') newPassword: string,
+    @Ctx() { req }: MyContext
+  ): Promise<UserResponse> {
+    if (newPassword.length <= 2) {
+      return {
+        errors: [
+          {
+            field: 'newPassword',
+            message: 'length must be greater than 2',
+          },
+        ],
+      };
+    }
+
+    const user = await User.findOne({ where: { resetToken: token } });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: 'token',
+            message: 'token expired',
+          },
+        ],
+      };
+    }
+
+    user.password = await argon2.hash(newPassword);
+    user.resetToken = '';
+    await user.save();
+
+    req.session.userId = user.id;
+
+    return {
+      user,
+    };
   }
 }
