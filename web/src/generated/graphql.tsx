@@ -12,6 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type EmailUsernamePasswordInput = {
@@ -33,6 +35,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
+  singleUpload: Scalars['Boolean'];
 };
 
 
@@ -57,6 +60,11 @@ export type MutationChangePasswordArgs = {
   token: Scalars['String'];
 };
 
+
+export type MutationSingleUploadArgs = {
+  file: Scalars['Upload'];
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
@@ -64,6 +72,7 @@ export type Query = {
   deleteAllUsers: Scalars['Boolean'];
   users: Array<User>;
 };
+
 
 export type User = {
   __typename?: 'User';
@@ -156,6 +165,16 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
   ) }
+);
+
+export type SingleUploadMutationVariables = Exact<{
+  file: Scalars['Upload'];
+}>;
+
+
+export type SingleUploadMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'singleUpload'>
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -354,6 +373,37 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SingleUploadDocument = gql`
+    mutation SingleUpload($file: Upload!) {
+  singleUpload(file: $file)
+}
+    `;
+export type SingleUploadMutationFn = Apollo.MutationFunction<SingleUploadMutation, SingleUploadMutationVariables>;
+
+/**
+ * __useSingleUploadMutation__
+ *
+ * To run a mutation, you first call `useSingleUploadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSingleUploadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [singleUploadMutation, { data, loading, error }] = useSingleUploadMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useSingleUploadMutation(baseOptions?: Apollo.MutationHookOptions<SingleUploadMutation, SingleUploadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SingleUploadMutation, SingleUploadMutationVariables>(SingleUploadDocument, options);
+      }
+export type SingleUploadMutationHookResult = ReturnType<typeof useSingleUploadMutation>;
+export type SingleUploadMutationResult = Apollo.MutationResult<SingleUploadMutation>;
+export type SingleUploadMutationOptions = Apollo.BaseMutationOptions<SingleUploadMutation, SingleUploadMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {

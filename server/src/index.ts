@@ -11,6 +11,8 @@ import connectPgSimple from 'connect-pg-simple';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import psl from 'psl';
+import { graphqlUploadExpress } from 'graphql-upload';
+
 
 const PgSession = connectPgSimple(session);
 
@@ -27,6 +29,7 @@ const PgSession = connectPgSimple(session);
     subscribers: ['src/subscriber/**/*.ts'],
   });
 
+  // parse application/json
   app.set('trust proxy', 1);
   app.use(cookieParser());
   app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -55,8 +58,10 @@ const PgSession = connectPgSimple(session);
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),
+    uploads: false,
+    introspection: true,
   });
-
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
   server.applyMiddleware({ app, cors: false });
 
   app.listen(parseInt(process.env.SERVER_PORT!), () => {

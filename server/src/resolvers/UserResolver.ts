@@ -17,6 +17,9 @@ import { COOKIE_NAME } from '../constants';
 import { validateRegister } from '../utils/validateRegister';
 import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
+import { Upload } from '../utils/Upload';
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { createWriteStream } from 'fs';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -245,5 +248,23 @@ export class UserResolver {
     return {
       user,
     };
+  }
+
+  @Mutation(() => Boolean)
+  async singleUpload(
+    @Arg('file', () => GraphQLUpload) file: FileUpload,
+    @Ctx() { req }: MyContext
+  ) {
+    const { createReadStream, filename } = file;
+    const writableStream = createWriteStream(
+      `${__dirname}/../../images/${filename}`,
+      { autoClose: true }
+    );
+    return new Promise((res, rej) => {
+      createReadStream()
+        .pipe(writableStream)
+        .on('finish', () => res(true))
+        .on('error', () => rej(false));
+    });
   }
 }

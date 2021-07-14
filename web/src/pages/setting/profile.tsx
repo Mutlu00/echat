@@ -5,24 +5,30 @@ import { InputField } from '../../components/htmlElements/InputField';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 import { Wrapper } from '../../components/Wrapper';
-import { useForgotPasswordMutation } from '../../generated/graphql';
+import {
+  useForgotPasswordMutation, useSingleUploadMutation,
+
+} from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 
 const Profile: React.FC = ({}) => {
   const [complete, setComplete] = useState(false);
   const [forgotPassword] = useForgotPasswordMutation();
+  const [singleUpload] = useSingleUploadMutation();
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
+    const file = acceptedFiles[0]
+    singleUpload({ variables: { file } });
   }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
 
   return (
     <Wrapper navbar>
       <Formik
         initialValues={{
-          usernameOrEmail: '',
-          password: '',
+          files: null,
         }}
         onSubmit={async (values, { setErrors }) => {}}
       >
