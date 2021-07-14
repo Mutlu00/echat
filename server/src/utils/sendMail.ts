@@ -21,3 +21,4 @@ export const sendMail = async (subject: string, to: string, html: string) => {
     html: html,
   });
 };
+// Backblaze B2

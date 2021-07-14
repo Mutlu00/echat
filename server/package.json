@@ -6,6 +6,7 @@
   "dependencies": {
     "apollo-server-express": "^2.25.2",
     "argon2": "^0.28.2",
+    "cloudinary": "^1.26.2",
     "connect-pg-simple": "^6.2.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
