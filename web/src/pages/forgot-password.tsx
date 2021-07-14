@@ -2,9 +2,9 @@ import { Wrapper } from '../components/Wrapper';
 import { withApollo } from '../utils/withApollo';
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import { InputField } from '../components/input/InputField';
-import { Loading } from '../components/utils/Loading';
+import { InputField } from '../components/htmlElements/InputField';
 import { useForgotPasswordMutation } from '../generated/graphql';
+import { ButtonField } from '../components/htmlElements/ButtonField';
 
 const ForgotPassword: React.FC = ({}) => {
   const [complete, setComplete] = useState(false);
@@ -46,16 +46,11 @@ const ForgotPassword: React.FC = ({}) => {
                     type='email'
                     label='Email'
                   />
-                  {isSubmitting ? (
-                    <Loading />
-                  ) : (
-                    <button
-                      type='submit'
-                      className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                    >
-                      Forgot Password
-                    </button>
-                  )}
+                <ButtonField
+                  loading={isSubmitting}
+                  text='Login'
+                  type='submit'
+                />
                 </Form>
               )
             }

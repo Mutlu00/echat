@@ -2,8 +2,8 @@ import { Form, Formik } from 'formik';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { InputField } from '../../components/input/InputField';
-import { Loading } from '../../components/utils/Loading';
+import { InputField } from '../../components/htmlElements/InputField';
+import { ButtonField } from '../../components/htmlElements/ButtonField';
 import { Wrapper } from '../../components/Wrapper';
 import {
   MeDocument,
@@ -86,16 +86,11 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
                   </div>
                 ) : null}
 
-                {isSubmitting ? (
-                  <Loading />
-                ) : (
-                  <button
-                    type='submit'
-                    className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                  >
-                    change password
-                  </button>
-                )}
+                <ButtonField
+                  loading={isSubmitting}
+                  text='Login'
+                  type='submit'
+                />
               </Form>
             )}
           </Formik>

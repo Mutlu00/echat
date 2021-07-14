@@ -1,6 +1,7 @@
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import { InputField } from '../components/input/InputField';
+import { InputField } from '../components/htmlElements/InputField';
+import { ButtonField } from '../components/htmlElements/ButtonField';
 import { Loading } from '../components/utils/Loading';
 import { Wrapper } from '../components/Wrapper';
 import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql';
@@ -72,16 +73,11 @@ const Register: React.FC<registerProps> = ({}) => {
                   label='Password'
                   type='password'
                 />
-                {isSubmitting ? (
-                  <Loading />
-                ) : (
-                  <button
-                    type='submit'
-                    className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                  >
-                    Register
-                  </button>
-                )}
+                <ButtonField
+                  loading={isSubmitting}
+                  text='Login'
+                  type='submit'
+                />
               </Form>
             )}
           </Formik>
