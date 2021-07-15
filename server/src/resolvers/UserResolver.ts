@@ -20,6 +20,7 @@ import { v4 } from 'uuid';
 import { Upload } from '../utils/Upload';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { createWriteStream } from 'fs';
+import { fileUpload } from '../utils/fileUpload';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -266,5 +267,30 @@ export class UserResolver {
         .on('finish', () => res(true))
         .on('error', () => rej(false));
     });
+  }
+
+  @Mutation(() => Boolean)
+  async multipleUpload(
+    @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
+    @Ctx() { req }: MyContext
+  ) {
+    console.log(files)
+    for (let file of files) {
+      await fileUpload(file)
+    }
+    // const awaitedFiles = await Promise.all(files)
+    // console.log(awaitedFiles)
+    // const { createReadStream, filename } = files;
+    // const writableStream = createWriteStream(
+    //   `${__dirname}/../../images/${filename}`,
+    //   { autoClose: true }
+    // );
+    // return new Promise((res, rej) => {
+    //   createReadStream()
+    //     .pipe(writableStream)
+    //     .on('finish', () => res(true))
+    //     .on('error', () => rej(false));
+    // });
+    return true
   }
 }

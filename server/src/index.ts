@@ -1,18 +1,17 @@
-import 'dotenv-safe/config';
-import 'reflect-metadata';
-import { COOKIE_NAME, __prod__ } from './constants';
-import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import { createConnection } from 'typeorm';
-import { buildSchema } from 'type-graphql';
-import { UserResolver } from './resolvers/UserResolver';
-import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import psl from 'psl';
+import cors from 'cors';
+import 'dotenv-safe/config';
+import express from 'express';
+import session from 'express-session';
 import { graphqlUploadExpress } from 'graphql-upload';
-
+import psl from 'psl';
+import 'reflect-metadata';
+import { buildSchema } from 'type-graphql';
+import { createConnection } from 'typeorm';
+import { COOKIE_NAME, __prod__ } from './constants';
+import { UserResolver } from './resolvers/UserResolver';
 
 const PgSession = connectPgSimple(session);
 

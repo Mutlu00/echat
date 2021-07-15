@@ -36,6 +36,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   singleUpload: Scalars['Boolean'];
+  multipleUpload: Scalars['Boolean'];
 };
 
 
@@ -63,6 +64,11 @@ export type MutationChangePasswordArgs = {
 
 export type MutationSingleUploadArgs = {
   file: Scalars['Upload'];
+};
+
+
+export type MutationMultipleUploadArgs = {
+  files: Array<Scalars['Upload']>;
 };
 
 export type Query = {
@@ -152,6 +158,16 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
+);
+
+export type MultipleUploadMutationVariables = Exact<{
+  files: Array<Scalars['Upload']> | Scalars['Upload'];
+}>;
+
+
+export type MultipleUploadMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'multipleUpload'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -340,6 +356,37 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const MultipleUploadDocument = gql`
+    mutation MultipleUpload($files: [Upload!]!) {
+  multipleUpload(files: $files)
+}
+    `;
+export type MultipleUploadMutationFn = Apollo.MutationFunction<MultipleUploadMutation, MultipleUploadMutationVariables>;
+
+/**
+ * __useMultipleUploadMutation__
+ *
+ * To run a mutation, you first call `useMultipleUploadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMultipleUploadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [multipleUploadMutation, { data, loading, error }] = useMultipleUploadMutation({
+ *   variables: {
+ *      files: // value for 'files'
+ *   },
+ * });
+ */
+export function useMultipleUploadMutation(baseOptions?: Apollo.MutationHookOptions<MultipleUploadMutation, MultipleUploadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MultipleUploadMutation, MultipleUploadMutationVariables>(MultipleUploadDocument, options);
+      }
+export type MultipleUploadMutationHookResult = ReturnType<typeof useMultipleUploadMutation>;
+export type MultipleUploadMutationResult = Apollo.MutationResult<MultipleUploadMutation>;
+export type MultipleUploadMutationOptions = Apollo.BaseMutationOptions<MultipleUploadMutation, MultipleUploadMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($options: EmailUsernamePasswordInput!) {
   register(options: $options) {

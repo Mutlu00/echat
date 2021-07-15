@@ -4,11 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@types/body-parser": "^1.19.1",
-    "@types/graphql-upload": "^8.0.6",
+
     "apollo-server-express": "^2.25.2",
     "argon2": "^0.28.2",
-    "body-parser": "^1.19.0",
     "cloudinary": "^1.26.2",
     "connect-pg-simple": "^6.2.1",
     "cookie-parser": "^1.4.5",
@@ -28,6 +26,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/graphql-upload": "^8.0.6",
     "@types/connect-pg-simple": "^4.2.3",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.11",
