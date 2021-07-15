@@ -274,9 +274,9 @@ export class UserResolver {
     @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
     @Ctx() { req }: MyContext
   ) {
-    console.log(files)
+
     for (let file of files) {
-      await fileUpload(file)
+      fileUpload(file)
     }
     // const awaitedFiles = await Promise.all(files)
     // console.log(awaitedFiles)
