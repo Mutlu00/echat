@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
 
-const link = createUploadLink({uri: "http://localhost:4000/graphql"})
+const link = createUploadLink({ uri: 'http://localhost:4001/graphql' });
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
@@ -16,7 +16,6 @@ const createClient = (ctx: NextPageContext) =>
           : undefined) || '',
     },
     cache: new InMemoryCache(),
-    
   });
 
 export const withApollo = createWithApollo(createClient);
