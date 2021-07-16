@@ -38,15 +38,19 @@ const Profile: React.FC = ({}) => {
         initialValues={{
           files: null,
         }}
-        onSubmit={async ({files}, { setErrors }) => {
+        onSubmit={async ({ files }, { setErrors }) => {
           // console.log(files)
           multipleUpload({ variables: { files } });
         }}
       >
         {({ values, handleChange, isSubmitting, setFieldValue }) => (
           <Form>
-            <FilesUpload setFieldValue={setFieldValue} files={values.files}/>
+            <FilesUpload setFieldValue={setFieldValue} files={values.files} />
             <ButtonField text='send' type='submit' loading={isSubmitting} />
+            <div className="flex justify-between">
+              <div>asd</div>
+              <div>asd</div>
+            </div>
           </Form>
         )}
       </Formik>

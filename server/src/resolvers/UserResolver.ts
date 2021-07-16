@@ -17,7 +17,6 @@ import { COOKIE_NAME } from '../constants';
 import { validateRegister } from '../utils/validateRegister';
 import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
-import { Upload } from '../utils/Upload';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { createWriteStream } from 'fs';
 import { fileUpload } from '../utils/fileUpload';
@@ -274,9 +273,8 @@ export class UserResolver {
     @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
     @Ctx() { req }: MyContext
   ) {
-
     for (let file of files) {
-      fileUpload(file)
+      fileUpload(file);
     }
     // const awaitedFiles = await Promise.all(files)
     // console.log(awaitedFiles)
@@ -291,6 +289,6 @@ export class UserResolver {
     //     .on('finish', () => res(true))
     //     .on('error', () => rej(false));
     // });
-    return true
+    return true;
   }
 }
