@@ -49,3 +49,14 @@ jobs:
       - run: mv .env ./server
       - run: pm2 start npm --name "server" -- start
         working-directory: ./server
+
+      - run: yarn
+        working-directory: ./web
+      - run: yarn build
+        working-directory: ./web
+      - run: pm2 delete web
+        working-directory: ./web
+        continue-on-error: true
+      - run: pm2 start npm --name "web" -- start
+        working-directory: ./web
+
