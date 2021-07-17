@@ -1,5 +1,4 @@
-import { useField } from 'formik';
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 

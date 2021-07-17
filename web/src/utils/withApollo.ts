@@ -2,8 +2,9 @@ import { createWithApollo } from './createWithApollo';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
+import { GRAPHQL_SERVER_URL } from '../constants';
 
-const link = createUploadLink({ uri: 'http://localhost:4001/graphql' });
+const link = createUploadLink({ uri: GRAPHQL_SERVER_URL });
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({

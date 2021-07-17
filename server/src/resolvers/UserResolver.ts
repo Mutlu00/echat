@@ -253,7 +253,6 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async singleUpload(
     @Arg('file', () => GraphQLUpload) file: FileUpload,
-    @Ctx() { req }: MyContext
   ) {
     const { createReadStream, filename } = file;
     const writableStream = createWriteStream(
@@ -271,13 +270,11 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async multipleUpload(
     @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
-    @Ctx() { req }: MyContext
   ) {
     for (let file of files) {
       fileUpload(file);
     }
     // const awaitedFiles = await Promise.all(files)
-    // console.log(awaitedFiles)
     // const { createReadStream, filename } = files;
     // const writableStream = createWriteStream(
     //   `${__dirname}/../../images/${filename}`,

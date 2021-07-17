@@ -2,7 +2,6 @@ import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { InputField } from '../components/htmlElements/InputField';
 import { ButtonField } from '../components/htmlElements/ButtonField';
-import { Loading } from '../components/utils/Loading';
 import { Wrapper } from '../components/Wrapper';
 import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';

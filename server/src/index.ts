@@ -1,17 +1,17 @@
+import 'dotenv-safe/config';
+import 'reflect-metadata';
+import express from 'express';
+import session from 'express-session';
 import { ApolloServer } from 'apollo-server-express';
 import connectPgSimple from 'connect-pg-simple';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import 'dotenv-safe/config';
-import express from 'express';
-import session from 'express-session';
 import { graphqlUploadExpress } from 'graphql-upload';
-import psl from 'psl';
-import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
-import { COOKIE_NAME, __prod__ } from './constants';
+import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
+import psl from 'psl';
 
 const PgSession = connectPgSimple(session);
 
@@ -23,9 +23,9 @@ const PgSession = connectPgSimple(session);
     url: process.env.DATABASE_URL,
     synchronize: true,
     logging: false,
-    entities: ['src/entity/**/*.ts'],
-    migrations: ['src/migration/**/*.ts'],
-    subscribers: ['src/subscriber/**/*.ts'],
+    entities: [ENTITIES],
+    migrations: [MIGRATIONS],
+    subscribers: [MIGRATIONS],
   });
 
   // parse application/json
