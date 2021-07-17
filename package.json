@@ -1,0 +1,8 @@
+{
+  "name": "echat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Don-Cryptus/graph-auth",
+  "author": "Don-Cryptus <don.cryptus@gmail.com>",
+  "license": "MIT"
+}
