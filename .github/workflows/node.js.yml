@@ -21,6 +21,11 @@ jobs:
         node-version: [16.x]
 
     steps:
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_DEBUG: false
+          envkey_SOME_API_KEY: "123456abcdef"
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
 
