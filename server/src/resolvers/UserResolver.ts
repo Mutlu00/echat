@@ -157,6 +157,8 @@ export class UserResolver {
 
     req.session.userId = user.id;
 
+    console.log(req.session)
+
     return {
       user,
     };
@@ -176,7 +178,7 @@ export class UserResolver {
       ({ session_sid }) => req.cookies[COOKIE_NAME].indexOf(session_sid) > 0
     );
 
-    Session.delete({ sid: session_sid });
+    await Session.delete({ sid: session_sid });
 
     return new Promise((resolve) =>
       req.session.destroy((err: any) => {
