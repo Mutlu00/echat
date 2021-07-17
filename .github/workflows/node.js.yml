@@ -21,21 +21,18 @@ jobs:
         node-version: [16.x]
 
     steps:
-      - name: Make envfile
-        uses: echat/echat/create-envfile@v1
-        with:
-          envkey_DEBUG: false
-          envkey_SOME_API_KEY: "123456abcdef"
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-
-        uses: SpicyPizza/create-envfile@v1.1
-      - name: Create .env file
 
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_DEBUG: false
+          envkey_SOME_API_KEY: "123456abcdef"
       - run: yarn
       - run: yarn build
       - run: pm2 delete server
