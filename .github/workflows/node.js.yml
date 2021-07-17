@@ -43,8 +43,10 @@ jobs:
           envkey_CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           envkey_CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           envkey_CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          
       - run: yarn
       - run: yarn build
       - run: pm2 delete server
         continue-on-error: true
+      - run: mv .env ./server
       - run: pm2 start npm --name "server" -- start
