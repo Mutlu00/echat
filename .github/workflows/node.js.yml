@@ -9,10 +9,6 @@ on:
   pull_request:
     branches: [master]
 
-defaults:
-  run:
-    working-directory: ./server
-
 jobs:
   build:
     runs-on: self-hosted
@@ -43,10 +39,13 @@ jobs:
           envkey_CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           envkey_CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           envkey_CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
-          directory: server
-
       - run: yarn
+        working-directory: ./server
       - run: yarn build
+        working-directory: ./server
       - run: pm2 delete server
+        working-directory: ./server
         continue-on-error: true
+      - run: mv .env ./server
       - run: pm2 start npm --name "server" -- start
+        working-directory: ./server
