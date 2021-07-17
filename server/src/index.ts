@@ -46,7 +46,7 @@ const PgSession = connectPgSimple(session);
         sameSite: 'lax', // csrf
         secure: __prod__, // cookie only works in https
         domain: __prod__
-          ? `.${psl.get(new URL(process.env.CORS_ORIGIN!).hostname)}` //get hostname without subdomain from cors_orgin .env
+          ? `${psl.get(new URL(process.env.CORS_ORIGIN!).hostname)}` //get hostname without subdomain from cors_orgin .env
           : undefined,
       },
     })
