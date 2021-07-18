@@ -147,6 +147,7 @@ To install yarn type:
    ```
 
 2. `./server/.env` environment file
+
    ```diff
    - Be sure too create `.env` file as explained in the `.env.development`
    ```
@@ -159,12 +160,14 @@ To install yarn type:
 ### Web Development
 
 1. Install Web NPM packages
+
    ```sh
    cd web/
    yarn
    ```
 
 2. `./web/src/constants.ts` graphql server url port
+
    ```diff
    - change GRAPHQL_SERVER_URL to your specified port in the ./server/.env file
    ```
@@ -173,10 +176,10 @@ To install yarn type:
    ```sh
    yarn dev
    ```
-<!-- 4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ``` -->
+   <!-- 4. Enter your API in `config.js`
+      ```JS
+      const API_KEY = 'ENTER YOUR API';
+      ``` -->
 
 # Getting Started Production
 
@@ -190,20 +193,75 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 - node
 
   ```sh
+  cd ~
+  curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && sudo bash nodesource_setup.sh
+  sudo apt install nodejs
   node -v
-  v16.5.0
   ```
+
+  - some node global dependecies
+    ```sh
+    sudo npm i pm2 yarn typescript nodemon ts-node -g
+    ```
 
 - postgres
+
   ```sh
-  psql -help
+  sudo apt install postgresql postgresql-contrib
   ```
 
-To install yarn type:
+  - (optional) Configure PostgreSQL to allow remote connection
 
-- yarn
+    - find postgress config
+      ```sh
+      $ find / -name "postgresql.conf"
+      /var/lib/pgsql/9.4/data/postgresql.conf
+      ```
+    - Open `postgresql.conf` file and replace line:
+
+      `listen_addresses = 'localhost'`
+
+      with
+
+      `listen_addresses = '*'`
+
+    - restart postgres
+      ```sh
+      sudo systemctl restart nginx
+      ```
+
+  - (optional) Create db example
+    ```sh
+    sudo -u postgres createdb -O USERNAME DATABASE
+    ```
+
+- nginx
   ```sh
-  npm i yarn -g
+  sudo apt install nginx
+  sudo ufw app list
+  sudo ufw allow 'Nginx HTTP'
+  systemctl status nginx
+  ```
+  - (optional) restart nginx
+    ```sh
+    sudo systemctl restart nginx
+    ```
+  - (optional) test the config
+    ```sh
+    sudo nginx -t
+    ```
+
+- docker (will be using it only for github actions .env file creation)
+  ```sh
+  sudo apt install apt-transport-https ca-certificates curl software-properties-common
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+  sudo apt install docker-ce
+
+  #Docker with sudo
+  sudo usermod -aG docker ${USER}
+  su - ${USER}
+
   ```
 
 ## Installation Production
