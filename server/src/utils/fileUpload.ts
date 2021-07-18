@@ -1,4 +1,4 @@
-import { createWriteStream } from 'fs';
+import fs from 'fs';
 import { FileUpload } from 'graphql-upload';
 const cloudinary = require('cloudinary').v2;
 
@@ -24,9 +24,15 @@ cloudinary.config({
 export const fileUpload = async (file: FileUpload) => {
   const { createReadStream, filename } = await file;
 
-  const filePath = `${__dirname}/../../images/${filename}`;
+  const filePath = `${__dirname}/../../files`;
 
-  const writableStream = createWriteStream(filePath, { autoClose: true });
+  if (!fs.existsSync(filePath)) {
+    fs.mkdirSync(filePath);
+  }
+
+  const writableStream = fs.createWriteStream(`${filePath}/${filename}`, {
+    autoClose: true,
+  });
   const createdFile = new Promise((res, rej) => {
     createReadStream()
       .pipe(writableStream)
