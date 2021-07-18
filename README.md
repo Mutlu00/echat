@@ -134,7 +134,7 @@ To install yarn type:
   ```
 
   ```diff
-  + Run 2 Terminals at the same time, one for Server & one for Web`
+  + Run 2 Terminals at the same time, one for Server & one for Web
   ```
 
 ### Server Development
@@ -146,8 +146,7 @@ To install yarn type:
    yarn
    ```
 
-2. `.env` File
-
+2. `./server/.env` File
    ```diff
    - Be sure too create `.env` file as explained in the `.env.development`
    ```
@@ -164,8 +163,16 @@ To install yarn type:
    cd web/
    yarn
    ```
-2. Run Web
-`sh yarn dev `
+
+2. `./web/src/constants.ts` File
+   ```diff
+   - change GRAPHQL_SERVER_URL to your specified port in the ./server/.env file
+   ```
+
+3. Run Web
+   ```sh
+   yarn dev
+   ```
 <!-- 4. Enter your API in `config.js`
    ```JS
    const API_KEY = 'ENTER YOUR API';
@@ -173,12 +180,12 @@ To install yarn type:
 
 # Getting Started Production
 
-This is an example of setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This is an example of setting up your project on the web.
+To get the local copy up and running on the web follow these simple example steps.
 
 ## Prerequisites Production
 
-This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and Postgres are really easy to install. To make sure you have them available on your machine, try running the following command.
+This project requires preferrably a Ubuntu Linux VPS (version 20 or later), nginx, nodejs, postgres, github actions, docker. We will be going over each step individually.
 
 - node
 
