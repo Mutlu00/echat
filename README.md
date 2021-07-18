@@ -48,7 +48,14 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#getting-started-development">Getting Started Development</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+        <li>
+      <a href="#getting-started-production">Getting Started Production</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
@@ -65,21 +72,21 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+# About The Project
 
 This Project will be something between epal.gg or battlebuddy.gg
 
-### Built With
+## Built With
 
 - Server
 
+  - [postgres](https://www.npmjs.com/package/pg)
   - [graphql](https://www.npmjs.com/package/graphql)
   - [typescript](https://www.npmjs.com/package/typescript)
   - [express](https://www.npmjs.com/package/express)
   - [apollo-server-express](https://www.npmjs.com/package/apollo-server-express)
   - [type-graphql](https://www.npmjs.com/package/type-graphql)
   - [typeorm](https://www.npmjs.com/package/typeorm)
-  - [postgres](https://www.npmjs.com/package/pg)
   - [nodemailer](https://www.npmjs.com/package/nodemailer)
   - [cloudinary](https://www.npmjs.com/package/cloudinary)
 
@@ -91,42 +98,78 @@ This Project will be something between epal.gg or battlebuddy.gg
   - [@apollo/client](https://www.npmjs.com/package/@apollo/client)
   - [next](https://www.npmjs.com/package/next)
 
-
 <!-- GETTING STARTED -->
 
-## Getting Started
+# Getting Started
 
 This is an example of setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+## Prerequisites
 
-This project requires NodeJS (version 14 or later) and NPM. Node and NPM are really easy to install. To make sure you have them available on your machine, try running the following command.
+This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and Postgres are really easy to install. To make sure you have them available on your machine, try running the following command.
 
 - node
+
   ```sh
-  $ node -v
-    v16.5.0
+  node -v
+  v16.5.0
   ```
 
-### Installation
+- postgres
+  ```sh
+  psql -help
+  ```
 
-1. Clone the repo
+To install yarn type:
+
+- yarn
+  ```sh
+  npm i yarn -g
+  ```
+
+## Installation
+
+- Clone the repo
    ```sh
    git clone https://github.com/Don-Cryptus/echat/
+   cd echat/
+   code .
    ```
-2. Install NPM packages
+
+Run 2 Terminals at the same time, one for Server & one for Web
+
+### Server
+
+1. Install Server NPM packages
    ```sh
-   npm install
+   cd server/
+   yarn
    ```
-3. Enter your API in `config.js`
+2. Run server
+    ```sh
+    yarn dev
+    ```
+
+### Web
+
+1. Install Web NPM packages
+   ```sh
+   cd web/
+   yarn
+   ```
+2. Run Web
+    ```sh
+    yarn dev
+    ```
+<!-- 4. Enter your API in `config.js`
    ```JS
    const API_KEY = 'ENTER YOUR API';
-   ```
+   ``` -->
 
 <!-- USAGE EXAMPLES -->
 
-## Usage
+# Usage
 
 Register, Login chat with a gamer, book them and play with them.
 
@@ -134,13 +177,13 @@ _For more examples, please refer to the [FAQ](https://aktoryes.de/)_
 
 <!-- ROADMAP -->
 
-## Roadmap
+# Roadmap
 
 See the [open issues](https://github.com/Don-Cryptus/echat/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 
-## Contributing
+# Contributing
 
 Any contributions you make are **greatly appreciated**.
 
@@ -152,13 +195,13 @@ Any contributions you make are **greatly appreciated**.
 
 <!-- LICENSE -->
 
-## License
+# License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 
-## Contact
+# Contact
 
 Your Email - don.cryptus@gmail.com
 
