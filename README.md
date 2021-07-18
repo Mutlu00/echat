@@ -15,7 +15,6 @@
 [![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 <!-- PROJECT LOGO -->
-<br />
 <p align="center">
   <a href="https://github.com/Don-Cryptus/echat">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
@@ -26,7 +25,7 @@
   <p align="center">
     Find some fun people to play with and have a good time.
     <br />
-    <a href="https://github.com/Don-Cryptus/echat/"><strong>Explore the docs »</strong></a>
+    <a href="#about-the-project"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://aktoryes.de/">View Demo</a>
@@ -50,23 +49,17 @@
     <li>
       <a href="#getting-started-development">Getting Started Development</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#prerequisites-development">Prerequisites Development</a></li>
+        <li><a href="#installation-development">Installation Development</a></li>
       </ul>
     </li>
         <li>
       <a href="#getting-started-production">Getting Started Production</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#prerequisites-production">Prerequisites Production</a></li>
+        <li><a href="#installation-production">Installation Production</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -98,14 +91,14 @@ This Project will be something between epal.gg or battlebuddy.gg
   - [@apollo/client](https://www.npmjs.com/package/@apollo/client)
   - [next](https://www.npmjs.com/package/next)
 
-<!-- GETTING STARTED -->
+<!-- GETTING STARTED DEVELOPMENT  -->
 
-# Getting Started
+# Getting Started Development
 
 This is an example of setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-## Prerequisites
+## Prerequisites Development
 
 This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and Postgres are really easy to install. To make sure you have them available on your machine, try running the following command.
 
@@ -128,14 +121,92 @@ To install yarn type:
   npm i yarn -g
   ```
 
-## Installation
+(Optional) You will need to have a SMPT Email and a Cloudinary account to use the API for Emails & Images
+
+## Installation Development
 
 - Clone the repo
+
+  ```sh
+  git clone https://github.com/Don-Cryptus/echat/
+  cd echat/
+  code .
+  ```
+
+  ```diff
+  + Run 2 Terminals at the same time, one for Server & one for Web`
+  ```
+
+### Server Development
+
+1. Install Server NPM packages
+
    ```sh
-   git clone https://github.com/Don-Cryptus/echat/
-   cd echat/
-   code .
+   cd server/
+   yarn
    ```
+
+2. `.env` File
+
+   ```diff
+   - Be sure too create `.env` file as explained in the `.env.development`
+   ```
+
+3. Run server
+   ```sh
+   yarn dev
+   ```
+
+### Web Development
+
+1. Install Web NPM packages
+   ```sh
+   cd web/
+   yarn
+   ```
+2. Run Web
+`sh yarn dev `
+<!-- 4. Enter your API in `config.js`
+   ```JS
+   const API_KEY = 'ENTER YOUR API';
+   ``` -->
+
+# Getting Started Production
+
+This is an example of setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+## Prerequisites Production
+
+This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and Postgres are really easy to install. To make sure you have them available on your machine, try running the following command.
+
+- node
+
+  ```sh
+  node -v
+  v16.5.0
+  ```
+
+- postgres
+  ```sh
+  psql -help
+  ```
+
+To install yarn type:
+
+- yarn
+  ```sh
+  npm i yarn -g
+  ```
+
+## Installation Production
+
+- Clone the repo
+  ```sh
+  git clone https://github.com/Don-Cryptus/echat/
+  cd echat/
+  code .
+  ```
 
 Run 2 Terminals at the same time, one for Server & one for Web
 
@@ -147,9 +218,9 @@ Run 2 Terminals at the same time, one for Server & one for Web
    yarn
    ```
 2. Run server
-    ```sh
-    yarn dev
-    ```
+   ```sh
+   yarn dev
+   ```
 
 ### Web
 
@@ -159,13 +230,9 @@ Run 2 Terminals at the same time, one for Server & one for Web
    yarn
    ```
 2. Run Web
-    ```sh
-    yarn dev
-    ```
-<!-- 4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ``` -->
+   ```sh
+   yarn dev
+   ```
 
 <!-- USAGE EXAMPLES -->
 
