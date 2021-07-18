@@ -146,7 +146,7 @@ To install yarn type:
    yarn
    ```
 
-2. `./server/.env` File
+2. `./server/.env` environment file
    ```diff
    - Be sure too create `.env` file as explained in the `.env.development`
    ```
@@ -164,7 +164,7 @@ To install yarn type:
    yarn
    ```
 
-2. `./web/src/constants.ts` File
+2. `./web/src/constants.ts` graphql server url port
    ```diff
    - change GRAPHQL_SERVER_URL to your specified port in the ./server/.env file
    ```
