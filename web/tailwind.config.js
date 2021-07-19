@@ -1,10 +1,5 @@
 module.exports = {
-  darkMode: 'media',
-  variants: {
-    extend: {
-      textOpacity: ['dark'],
-    },
-  },
+  darkMode: 'class',
   mode: 'jit',
   purge: [
     './src/pages/**/*.{js,ts,jsx,tsx}',
@@ -16,5 +11,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [],
 };

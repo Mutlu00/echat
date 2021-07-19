@@ -13,6 +13,7 @@ import {
 import { toErrorMap } from '../../utils/toErrorMap';
 import { withApollo } from '../../utils/withApollo';
 import NextLink from 'next/link';
+import { FormHeader } from '../../components/utils/FormHeader';
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
   const router = useRouter();
@@ -20,16 +21,8 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
   const [tokenError, setTokenError] = useState('');
   return (
     <Wrapper>
-      <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-        <img
-          className='mx-auto h-12 w-auto'
-          src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
-          alt='Workflow'
-        />
-        <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
-          Change Password
-        </h2>
-      </div>
+
+      <FormHeader text="Change Password"/>
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>

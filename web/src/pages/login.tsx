@@ -2,6 +2,7 @@ import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { InputField } from '../components/htmlElements/InputField';
 import { ButtonField } from '../components/htmlElements/ButtonField';
+import { FormHeader } from '../components/utils/FormHeader';
 import { Wrapper } from '../components/Wrapper';
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
@@ -15,16 +16,8 @@ const Login: React.FC<registerProps> = ({}) => {
   const [login] = useLoginMutation();
   return (
     <Wrapper navbar>
-      <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-        <img
-          className='mx-auto h-12 w-auto'
-          src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
-          alt='Workflow'
-        />
-        <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
-          Sign in to your account
-        </h2>
-      </div>
+
+      <FormHeader text="Sign in to your account"/>
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>

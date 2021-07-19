@@ -5,12 +5,15 @@ import NextLink from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import { isServer } from '../utils/isServer';
 import { useApolloClient } from '@apollo/client';
-
+import { DarkModeSwitch } from './utils/DarkMode';
+import useDarkModeStore from '../store/DarkModeStore';
 
 export const NavBar: React.FC = ({}) => {
   const { data, loading } = useMeQuery({ skip: isServer() });
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+
+  const { theme } = useDarkModeStore();
 
   let userMenu: JSX.Element | null = null;
 
@@ -60,10 +63,10 @@ export const NavBar: React.FC = ({}) => {
   }
 
   return (
-    <Disclosure as='nav' className='bg-white dark:bg-gray-900 shadow'>
+    <Disclosure as='nav' className='bg-white dark:bg-gray-800 shadow'>
       {({ open }) => (
         <>
-          <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
+          <div className='max-w-7xl mx-auto'>
             <div className='relative flex justify-between h-16'>
               <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
                 <Disclosure.Button className='inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
@@ -86,21 +89,24 @@ export const NavBar: React.FC = ({}) => {
                   <NextLink href='/'>
                     <img
                       className='hidden lg:block h-8 w-auto'
-                      src='https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg'
+                      src={
+                        theme
+                          ? 'https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg'
+                          : 'https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg'
+                      }
                       alt='Workflow'
                     />
                   </NextLink>
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <NextLink href='/'>
-                    <a className='border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'>
+                    <a className='border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white'>
                       Home
                     </a>
                   </NextLink>
                 </div>
               </div>
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
-
                 <Menu as='div' className='ml-3 relative'>
                   {({ open }) => (
                     <>
@@ -135,6 +141,7 @@ export const NavBar: React.FC = ({}) => {
                   )}
                 </Menu>
 
+                <DarkModeSwitch />
               </div>
             </div>
           </div>
