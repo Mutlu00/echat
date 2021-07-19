@@ -176,10 +176,6 @@ To install yarn type:
    ```sh
    yarn dev
    ```
-   <!-- 4. Enter your API in `config.js`
-      ```JS
-      const API_KEY = 'ENTER YOUR API';
-      ``` -->
 
 # Getting Started Production
 
@@ -266,38 +262,75 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 
 ## Installation Production
 
-- Clone the repo
+1. First of all you need to setup [github action secrets](https://github.com/Don-Cryptus/echat/settings/secrets/actions) from `./server/.env`
+2. set up your workflows in like in `./.github/workflows/node.js.yml`
+3. set up action runner as shown [here](https://github.com/Don-Cryptus/echat/settings/actions/runners/new) 
+4. while still beeing in the action-runner folder run this:(this will setup background process for the actions)
+   ```sh
+   sudo ./svc.sh install
+   sudo ./svc.sh start
+   ```
+
+- nginx setup (use your site-name.com)
+  
   ```sh
-  git clone https://github.com/Don-Cryptus/echat/
-  cd echat/
-  code .
+  sudo nano /etc/nginx/sites-available/site-name.com.conf
   ```
+  
+  paste this config
+  ```
+    server {
+    root /var/www/html;
 
-Run 2 Terminals at the same time, one for Server & one for Web
+    index index.html index.htm index.nginx-debian.html;
+    #
+    server_name aktoryes.de www.aktoryes.de;
 
-### Server
+    location / {
+      #DONT FORGET TO CHANGE TO YOUR CLIENT PORT
+      proxy_pass http://localhost:3000; 
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+      proxy_redirect off;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
 
-1. Install Server NPM packages
-   ```sh
-   cd server/
-   yarn
-   ```
-2. Run server
-   ```sh
-   yarn dev
-   ```
+    }
 
-### Web
+    location /graphql {
+      #DONT FORGET TO CHANGE TO YOUR SERVER PORT
+      proxy_pass http://localhost:4001/graphql;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+      proxy_redirect off;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    }
+  ```
+    ```diff
+    - Dont forget to change site-name.com, http://localhost:3000, http://localhost:4001/graphql
+    ```
+    copy config to enabled sites and test the config & restart nginx
+    ```sh
+    sudo ln -s /etc/nginx/sites-available/site-name.com.conf /etc/nginx/sites-enabled/
+    nginx -t
+    sudo service nginx restart
+    ```
 
-1. Install Web NPM packages
-   ```sh
-   cd web/
-   yarn
-   ```
-2. Run Web
-   ```sh
-   yarn dev
-   ```
+- SSL (choose your site-name.com)
+  ```sh
+  sudo apt install python3-certbot-nginx
+  sudo certbot --nginx -d site-name.com -d www.site-name.com
+  ```
 
 <!-- USAGE EXAMPLES -->
 
