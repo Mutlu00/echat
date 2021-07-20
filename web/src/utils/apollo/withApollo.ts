@@ -2,7 +2,7 @@ import { createWithApollo } from './createWithApollo';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
-import { GRAPHQL_SERVER_URL } from '../constants';
+import { GRAPHQL_SERVER_URL } from '../../constants';
 
 const link = createUploadLink({ uri: GRAPHQL_SERVER_URL });
 

@@ -1,5 +1,5 @@
 import { Wrapper } from '../components/Wrapper';
-import { withApollo } from '../utils/withApollo';
+import { withApollo } from '../utils/apollo/withApollo';
 
 interface indexProps {}
 

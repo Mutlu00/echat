@@ -4,7 +4,7 @@ import { ButtonField } from '../../components/htmlElements/ButtonField';
 import { FilesUpload } from '../../components/htmlElements/FilesUpload';
 import { Wrapper } from '../../components/Wrapper';
 import { useMultipleUploadMutation } from '../../generated/graphql';
-import { withApollo } from '../../utils/withApollo';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 const Profile: React.FC = ({}) => {
   const [multipleUpload] = useMultipleUploadMutation();

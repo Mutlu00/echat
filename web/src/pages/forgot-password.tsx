@@ -1,11 +1,10 @@
-import { Wrapper } from '../components/Wrapper';
-import { withApollo } from '../utils/withApollo';
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import { InputField } from '../components/htmlElements/InputField';
+import { Wrapper } from '../components/Wrapper';
+import { withApollo } from '../utils/apollo/withApollo';
+import { InputField, ButtonField } from '../components/htmlElements/';
 import { useForgotPasswordMutation } from '../generated/graphql';
-import { ButtonField } from '../components/htmlElements/ButtonField';
-import { FormHeader } from '../components/utils/FormHeader';
+import { FormHeader } from '../components/utils/';
 
 const ForgotPassword: React.FC = ({}) => {
   const [complete, setComplete] = useState(false);
@@ -14,7 +13,6 @@ const ForgotPassword: React.FC = ({}) => {
     <Wrapper navbar>
 
       <FormHeader text="Reset your Password"/>
-
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>

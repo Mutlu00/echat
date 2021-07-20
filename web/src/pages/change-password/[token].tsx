@@ -2,16 +2,15 @@ import { Form, Formik } from 'formik';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { InputField } from '../../components/htmlElements/InputField';
-import { ButtonField } from '../../components/htmlElements/ButtonField';
+import { InputField, ButtonField } from '../../components/htmlElements/';
 import { Wrapper } from '../../components/Wrapper';
 import {
   MeDocument,
   MeQuery,
   useChangePasswordMutation,
 } from '../../generated/graphql';
-import { toErrorMap } from '../../utils/toErrorMap';
-import { withApollo } from '../../utils/withApollo';
+import { toErrorMap } from '../../utils/helpers/toErrorMap';
+import { withApollo } from '../../utils/apollo/withApollo';
 import NextLink from 'next/link';
 import { FormHeader } from '../../components/utils/FormHeader';
 
