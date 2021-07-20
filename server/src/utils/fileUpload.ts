@@ -10,8 +10,8 @@ type CloudinaryUploadResult = {
   height: number;
   format: string;
   resource_type: string;
-  url: URL;
-  secure_url: URL;
+  url: string;
+  secure_url: string;
 };
 
 cloudinary.config({
@@ -40,15 +40,22 @@ export const fileUpload = async (file: FileUpload) => {
       .on('error', () => rej(false));
   });
 
+  let link = '';
   try {
     await createdFile;
-    cloudinary.uploader.upload(
-      filePath,
+    await cloudinary.uploader.upload(
+      `${filePath}/${filename}`,
       (error: any, result: CloudinaryUploadResult) => {
-        console.log(result, error);
+        if (error) {
+          console.log(error);
+          return;
+        }
+        link = result.secure_url;
       }
     );
   } catch (error) {
     console.log(error);
   }
+
+  return link;
 };

@@ -25,7 +25,7 @@ export const InputField: React.FC<InputFieldProps> = ({ label, ...props }) => {
           placeholder={props.placeholder}
           className={`
           ${error ? 'border-red-500' : 'border-gray-300'} 
-          'appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+           text-gray-700 appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
           `}
         />
       </div>

@@ -19,7 +19,6 @@ import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { createWriteStream } from 'fs';
-import { fileUpload } from '../utils/fileUpload';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -269,25 +268,5 @@ export class UserResolver {
     });
   }
 
-  @Mutation(() => Boolean)
-  async multipleUpload(
-    @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
-  ) {
-    for (let file of files) {
-      fileUpload(file);
-    }
-    // const awaitedFiles = await Promise.all(files)
-    // const { createReadStream, filename } = files;
-    // const writableStream = createWriteStream(
-    //   `${__dirname}/../../images/${filename}`,
-    //   { autoClose: true }
-    // );
-    // return new Promise((res, rej) => {
-    //   createReadStream()
-    //     .pipe(writableStream)
-    //     .on('finish', () => res(true))
-    //     .on('error', () => rej(false));
-    // });
-    return true;
-  }
+
 }

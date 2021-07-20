@@ -28,6 +28,14 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type Images = {
+  __typename?: 'Images';
+  id: Scalars['Int'];
+  type: Scalars['String'];
+  url: Scalars['String'];
+  userId: User;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
@@ -36,7 +44,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   singleUpload: Scalars['Boolean'];
-  multipleUpload: Scalars['Boolean'];
+  multipleUpload: Array<Images>;
 };
 
 
@@ -69,6 +77,7 @@ export type MutationSingleUploadArgs = {
 
 export type MutationMultipleUploadArgs = {
   files: Array<Scalars['Upload']>;
+  type: Scalars['String'];
 };
 
 export type Query = {
@@ -77,6 +86,12 @@ export type Query = {
   me?: Maybe<User>;
   deleteAllUsers: Scalars['Boolean'];
   users: Array<User>;
+  userImages?: Maybe<Array<Images>>;
+};
+
+
+export type QueryUserImagesArgs = {
+  type: Scalars['String'];
 };
 
 
@@ -162,12 +177,16 @@ export type LogoutMutation = (
 
 export type MultipleUploadMutationVariables = Exact<{
   files: Array<Scalars['Upload']> | Scalars['Upload'];
+  type: Scalars['String'];
 }>;
 
 
 export type MultipleUploadMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'multipleUpload'>
+  & { multipleUpload: Array<(
+    { __typename?: 'Images' }
+    & Pick<Images, 'id' | 'type' | 'url'>
+  )> }
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -202,6 +221,19 @@ export type MeQuery = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
   )> }
+);
+
+export type UserImagesQueryVariables = Exact<{
+  type: Scalars['String'];
+}>;
+
+
+export type UserImagesQuery = (
+  { __typename?: 'Query' }
+  & { userImages?: Maybe<Array<(
+    { __typename?: 'Images' }
+    & Pick<Images, 'id' | 'type' | 'url'>
+  )>> }
 );
 
 export const RegularErrorFragmentDoc = gql`
@@ -357,8 +389,12 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const MultipleUploadDocument = gql`
-    mutation MultipleUpload($files: [Upload!]!) {
-  multipleUpload(files: $files)
+    mutation MultipleUpload($files: [Upload!]!, $type: String!) {
+  multipleUpload(files: $files, type: $type) {
+    id
+    type
+    url
+  }
 }
     `;
 export type MultipleUploadMutationFn = Apollo.MutationFunction<MultipleUploadMutation, MultipleUploadMutationVariables>;
@@ -377,6 +413,7 @@ export type MultipleUploadMutationFn = Apollo.MutationFunction<MultipleUploadMut
  * const [multipleUploadMutation, { data, loading, error }] = useMultipleUploadMutation({
  *   variables: {
  *      files: // value for 'files'
+ *      type: // value for 'type'
  *   },
  * });
  */
@@ -486,3 +523,40 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UserImagesDocument = gql`
+    query UserImages($type: String!) {
+  userImages(type: $type) {
+    id
+    type
+    url
+  }
+}
+    `;
+
+/**
+ * __useUserImagesQuery__
+ *
+ * To run a query within a React component, call `useUserImagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserImagesQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useUserImagesQuery(baseOptions: Apollo.QueryHookOptions<UserImagesQuery, UserImagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserImagesQuery, UserImagesQueryVariables>(UserImagesDocument, options);
+      }
+export function useUserImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserImagesQuery, UserImagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserImagesQuery, UserImagesQueryVariables>(UserImagesDocument, options);
+        }
+export type UserImagesQueryHookResult = ReturnType<typeof useUserImagesQuery>;
+export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQuery>;
+export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;

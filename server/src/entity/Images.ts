@@ -4,31 +4,28 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Images } from './Images';
+import { User } from './User';
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Images extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
   @Column()
-  username: string;
+  type: string;
 
   @Field()
   @Column({ unique: true })
-  email: string;
+  url: string;
 
-  @Column()
-  password: string;
-
-  @Column({ nullable: true })
-  resetToken: string;
-
-  @OneToMany(() => Images, (images) => images.userId)
-  images: Images[];
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.images)
+  @JoinColumn({ name: 'userId' })
+  userId: User;
 }

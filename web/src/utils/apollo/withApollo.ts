@@ -4,7 +4,7 @@ import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
 import { GRAPHQL_SERVER_URL } from '../../constants';
 
-const link = createUploadLink({ uri: GRAPHQL_SERVER_URL });
+const link = createUploadLink({ uri: GRAPHQL_SERVER_URL, credentials: "include" });
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({

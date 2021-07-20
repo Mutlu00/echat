@@ -12,9 +12,9 @@ import { createConnection } from 'typeorm';
 import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import psl from 'psl';
+import { ImagesResolver } from './resolvers/ImagesResolver';
 
 const PgSession = connectPgSimple(session);
-
 
 (async () => {
   const app = express();
@@ -54,7 +54,7 @@ const PgSession = connectPgSimple(session);
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, ImagesResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),

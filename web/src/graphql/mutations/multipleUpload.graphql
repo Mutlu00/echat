@@ -1,3 +1,8 @@
-mutation MultipleUpload($files: [Upload!]!) {
-  multipleUpload(files: $files)
+# Write your query or mutation here
+mutation MultipleUpload($files: [Upload!]!, $type: String!) {
+  multipleUpload(files: $files, type: $type) {
+    id
+    type
+    url
+  }
 }

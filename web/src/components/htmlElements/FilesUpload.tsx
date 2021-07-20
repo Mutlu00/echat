@@ -1,6 +1,13 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
+import {
+  useMultipleUploadMutation,
+  UserImagesDocument,
+  UserImagesQuery,
+  useUserImagesQuery,
+} from '../../generated/graphql';
+import { isServer } from '../../utils/helpers/isServer';
 
 type FileUploadProps = {
   setFieldValue: (
@@ -15,12 +22,40 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
   setFieldValue,
   files,
 }) => {
+  const { data, loading } = useUserImagesQuery({
+    skip: isServer(),
+    variables: { type: 'secondary' },
+  });
+  const [multipleUpload] = useMultipleUploadMutation();
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
-    onDrop: (acceptedFiles) => {
-      setFieldValue('files', acceptedFiles);
+    onDrop: async (files) => {
+      setFieldValue('files', files);
+      await multipleUpload({
+        variables: { files, type: 'secondary' },
+        update: (cache, { data }) => {
+          console.log(data?.multipleUpload);
+          cache.writeQuery<UserImagesQuery>({
+            query: UserImagesDocument,
+            variables: {type: "secondary"},
+            data: {
+              __typename: 'Query',
+              userImages: data?.multipleUpload,
+            },
+          });
+        },
+      });
     },
   });
+
+  // const { todo } = ca.readQuery({
+  //   query: READ_TODO,
+  //   variables: { // Provide any required variables here
+  //     id: 5,
+  //   },
+  // });
+
   return (
     <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
       <label className='block text-sm font-medium text-gray-700'>
@@ -52,12 +87,18 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
           <p className='text-xs text-gray-500'>PNG, JPG, GIF up to 10MB</p>
         </div>
       </div>
-      {files &&
-        files.map((file, i) => (
-          <li key={i}>
-            {`File:${file.name} Type:${file.type} Size:${file.size} bytes`}{' '}
-          </li>
-        ))}
+      <div>
+        {files &&
+          files.map((file, i) => (
+            <li className='text-gray-700' key={i}>
+              {`File:${file.name} Type:${file.type} Size:${file.size} bytes`}{' '}
+            </li>
+          ))}
+      </div>
+      <div className='flex flex-wrap'>
+        {!loading &&
+          data?.userImages?.map((image) => <img key={image.url} src={image.url} alt='' />)}
+      </div>
     </div>
   );
 };

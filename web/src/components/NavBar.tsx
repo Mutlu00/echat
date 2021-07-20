@@ -14,7 +14,7 @@ export const NavBar: React.FC = ({}) => {
   const apolloClient = useApolloClient();
 
   const { theme, hasHydrated } = useDarkModeStore();
-  
+
   let userMenu: JSX.Element | null = null;
   // data is loading
   if (loading) {
@@ -45,6 +45,13 @@ export const NavBar: React.FC = ({}) => {
           <div className='block px-4 py-2 text-sm text-gray-700'>
             {`Hello ${data.me!.username}`}
           </div>
+        </Menu.Item>
+        <Menu.Item>
+          <NextLink href='/setting/profile'>
+            <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+              Settings
+            </a>
+          </NextLink>
         </Menu.Item>
         <Menu.Item>
           <div
