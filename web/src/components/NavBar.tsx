@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import { isServer } from '../utils/isServer';
 import { useApolloClient } from '@apollo/client';
-import { DarkModeSwitch } from './utils/DarkMode';
+import { DarkModeSwitch, useHasHydrated } from './utils/DarkMode';
 import useDarkModeStore from '../store/DarkModeStore';
 
 export const NavBar: React.FC = ({}) => {
@@ -14,9 +14,9 @@ export const NavBar: React.FC = ({}) => {
   const apolloClient = useApolloClient();
 
   const { theme } = useDarkModeStore();
-
+  const hasHydrated = useHasHydrated();
+  
   let userMenu: JSX.Element | null = null;
-
   // data is loading
   if (loading) {
     // user not logged in
@@ -90,7 +90,7 @@ export const NavBar: React.FC = ({}) => {
                     <img
                       className='hidden lg:block h-8 w-auto'
                       src={
-                        theme
+                        hasHydrated && theme
                           ? 'https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg'
                           : 'https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg'
                       }
