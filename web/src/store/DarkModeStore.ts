@@ -4,6 +4,7 @@ import create from 'zustand';
 import { persist} from "zustand/middleware"
 
 type DarkMode = {
+  hasHydrated: boolean;
   theme: boolean;
   changeTheme: () => void;
   startTheme: () => void;
@@ -13,6 +14,7 @@ const useDarkModeStore = create<DarkMode>(
   persist(
     immer(
       (set): DarkMode => ({
+        hasHydrated: false,
         theme: true,
         changeTheme: () =>
           set((state) => {
@@ -25,6 +27,7 @@ const useDarkModeStore = create<DarkMode>(
             }
           }),
         startTheme: () => set((state) => {
+          state.hasHydrated = true
           if (state.theme) {
             document.querySelector('html')?.classList?.add?.('dark');
           } else {
@@ -37,6 +40,8 @@ const useDarkModeStore = create<DarkMode>(
       name: 'DarkMode',
       serialize: (state) => JSON.stringify(state),
       deserialize: (storedState) => JSON.parse(storedState),
+      blacklist: ["hasHydrated"]
+
     }
   )
 );
