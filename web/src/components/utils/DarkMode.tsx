@@ -17,7 +17,7 @@ export const DarkModeSwitch: React.FC = () => {
     <Switch
       checked={hasHydrated && theme}
       onChange={changeTheme}
-      className='ml-1 flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-5 w-10 cursor-pointer'
+      className='text-gray-800 ml-1 flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-5 w-10 cursor-pointer'
     >
       <span className='sr-only'>Use setting</span>
       <span
