@@ -2,11 +2,8 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
-  namedOperations,
   useDeleteImageMutation,
   useMultipleUploadMutation,
-  UserImagesDocument,
-  UserImagesQuery,
   useUserImagesQuery,
 } from '../../generated/graphql';
 import { isServer } from '../../utils/helpers/isServer';

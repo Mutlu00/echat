@@ -2,14 +2,9 @@ import { Form, Formik } from 'formik';
 import React from 'react';
 import {ButtonField, FilesUpload} from '../../components/htmlElements/';
 import { Wrapper } from '../../components/Wrapper';
-import {
-  useMultipleUploadMutation,
-} from '../../generated/graphql';
 import { withApollo } from '../../utils/apollo/withApollo';
 
 const Profile: React.FC = ({}) => {
-  const [multipleUpload] = useMultipleUploadMutation();
-
 
   return (
     <Wrapper navbar>
