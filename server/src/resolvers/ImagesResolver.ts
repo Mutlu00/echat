@@ -22,6 +22,12 @@ type ImageTypes = 'profile' | 'cover' | 'secondary';
 
 @Resolver()
 export class ImagesResolver {
+  @Mutation(() => Boolean)
+  async deleteAllImages() {
+    Images.delete({});
+    return true;
+  }
+
   @Query(() => [Images], { nullable: true })
   @UseMiddleware(isAuth)
   async userImages(
@@ -43,13 +49,31 @@ export class ImagesResolver {
     const { userId } = req.session;
 
     for (let file of files) {
-      const url = await fileUpload(file);
-      console.log(url);
-      await Images.create({ url, userId, type }).save();
+      const res = await fileUpload(file);
+      console.log(res.secure_url);
+      await Images.create({
+        url: res.secure_url,
+        publicId: res.public_id,
+        userId,
+        type,
+      }).save();
     }
 
     const images = await Images.find({ where: { userId, type } });
 
     return images;
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteImage(
+    @Arg('publicId') publicId: string,
+    @Ctx() { req }: MyContext
+  ) {
+    const { userId } = req.session;
+    await this.deleteAllImages()
+    await Images.delete({ publicId, userId });
+
+    return true;
   }
 }

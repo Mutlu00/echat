@@ -3,5 +3,6 @@ query UserImages($type: String!) {
     id
     type
     url
+    publicId
   }
 }

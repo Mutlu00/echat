@@ -4,7 +4,10 @@ import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
 import { GRAPHQL_SERVER_URL } from '../../constants';
 
-const link = createUploadLink({ uri: GRAPHQL_SERVER_URL, credentials: "include" });
+const link = createUploadLink({
+  uri: GRAPHQL_SERVER_URL,
+  credentials: 'include',
+});
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
@@ -16,7 +19,20 @@ const createClient = (ctx: NextPageContext) =>
           ? ctx?.req?.headers.cookie
           : undefined) || '',
     },
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            userImages: {
+              merge: false,
+            },
+            multiUpload: {
+              merge: false,
+            },
+          },
+        },
+      },
+    }),
   });
 
 export const withApollo = createWithApollo(createClient);

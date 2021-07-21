@@ -33,29 +33,24 @@ export const fileUpload = async (file: FileUpload) => {
   const writableStream = fs.createWriteStream(`${filePath}/${filename}`, {
     autoClose: true,
   });
-  const createdFile = new Promise((res, rej) => {
+  const createdFile = new Promise<boolean>((res, rej) => {
     createReadStream()
       .pipe(writableStream)
       .on('finish', () => res(true))
       .on('error', () => rej(false));
   });
 
-  let link = '';
-  try {
-    await createdFile;
-    await cloudinary.uploader.upload(
+  await createdFile;
+
+  const image = new Promise<CloudinaryUploadResult>((resolve, reject)  => {
+    cloudinary.uploader.upload(
       `${filePath}/${filename}`,
-      (error: any, result: CloudinaryUploadResult) => {
-        if (error) {
-          console.log(error);
-          return;
-        }
-        link = result.secure_url;
+      (err: any, img: CloudinaryUploadResult) => {
+        if (err) return reject(err);
+        return resolve(img);
       }
     );
-  } catch (error) {
-    console.log(error);
-  }
+  });
 
-  return link;
+  return image
 };

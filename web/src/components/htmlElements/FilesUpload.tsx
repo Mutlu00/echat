@@ -2,6 +2,8 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
+  namedOperations,
+  useDeleteImageMutation,
   useMultipleUploadMutation,
   UserImagesDocument,
   UserImagesQuery,
@@ -22,11 +24,12 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
   setFieldValue,
   files,
 }) => {
-  const { data, loading } = useUserImagesQuery({
+  const { data, loading, refetch } = useUserImagesQuery({
     skip: isServer(),
     variables: { type: 'secondary' },
   });
   const [multipleUpload] = useMultipleUploadMutation();
+  const [deleteImage] = useDeleteImageMutation();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -34,27 +37,10 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
       setFieldValue('files', files);
       await multipleUpload({
         variables: { files, type: 'secondary' },
-        update: (cache, { data }) => {
-          console.log(data?.multipleUpload);
-          cache.writeQuery<UserImagesQuery>({
-            query: UserImagesDocument,
-            variables: {type: "secondary"},
-            data: {
-              __typename: 'Query',
-              userImages: data?.multipleUpload,
-            },
-          });
-        },
       });
+      refetch();
     },
   });
-
-  // const { todo } = ca.readQuery({
-  //   query: READ_TODO,
-  //   variables: { // Provide any required variables here
-  //     id: 5,
-  //   },
-  // });
 
   return (
     <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
@@ -97,7 +83,23 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
       </div>
       <div className='flex flex-wrap'>
         {!loading &&
-          data?.userImages?.map((image) => <img key={image.url} src={image.url} alt='' />)}
+          data?.userImages?.map((image) => (
+            <div key={image.url} className='relative'>
+              <img className='' src={image.url} alt='dummy-image' />
+              <button
+                type='button'
+                className='absolute top-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2'
+                onClick={async () => {
+                  await deleteImage({
+                    variables: { publicId: image.publicId },
+                  });
+                  refetch();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );

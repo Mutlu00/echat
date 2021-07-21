@@ -24,6 +24,10 @@ export class Images extends BaseEntity {
   @Column({ unique: true })
   url: string;
 
+  @Field()
+  @Column({ unique: true, nullable: true })
+  publicId: string;
+
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.images)
   @JoinColumn({ name: 'userId' })

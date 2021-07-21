@@ -4,5 +4,6 @@ mutation MultipleUpload($files: [Upload!]!, $type: String!) {
     id
     type
     url
+    publicId
   }
 }

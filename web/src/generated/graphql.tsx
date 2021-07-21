@@ -33,6 +33,7 @@ export type Images = {
   id: Scalars['Int'];
   type: Scalars['String'];
   url: Scalars['String'];
+  publicId: Scalars['String'];
   userId: User;
 };
 
@@ -44,7 +45,9 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   singleUpload: Scalars['Boolean'];
+  deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Images>;
+  deleteImage: Scalars['Boolean'];
 };
 
 
@@ -78,6 +81,11 @@ export type MutationSingleUploadArgs = {
 export type MutationMultipleUploadArgs = {
   files: Array<Scalars['Upload']>;
   type: Scalars['String'];
+};
+
+
+export type MutationDeleteImageArgs = {
+  publicId: Scalars['String'];
 };
 
 export type Query = {
@@ -143,6 +151,16 @@ export type ChangePasswordMutation = (
   ) }
 );
 
+export type DeleteImageMutationVariables = Exact<{
+  publicId: Scalars['String'];
+}>;
+
+
+export type DeleteImageMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteImage'>
+);
+
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -185,7 +203,7 @@ export type MultipleUploadMutation = (
   { __typename?: 'Mutation' }
   & { multipleUpload: Array<(
     { __typename?: 'Images' }
-    & Pick<Images, 'id' | 'type' | 'url'>
+    & Pick<Images, 'id' | 'type' | 'url' | 'publicId'>
   )> }
 );
 
@@ -232,7 +250,7 @@ export type UserImagesQuery = (
   { __typename?: 'Query' }
   & { userImages?: Maybe<Array<(
     { __typename?: 'Images' }
-    & Pick<Images, 'id' | 'type' | 'url'>
+    & Pick<Images, 'id' | 'type' | 'url' | 'publicId'>
   )>> }
 );
 
@@ -293,6 +311,37 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const DeleteImageDocument = gql`
+    mutation DeleteImage($publicId: String!) {
+  deleteImage(publicId: $publicId)
+}
+    `;
+export type DeleteImageMutationFn = Apollo.MutationFunction<DeleteImageMutation, DeleteImageMutationVariables>;
+
+/**
+ * __useDeleteImageMutation__
+ *
+ * To run a mutation, you first call `useDeleteImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteImageMutation, { data, loading, error }] = useDeleteImageMutation({
+ *   variables: {
+ *      publicId: // value for 'publicId'
+ *   },
+ * });
+ */
+export function useDeleteImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteImageMutation, DeleteImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteImageMutation, DeleteImageMutationVariables>(DeleteImageDocument, options);
+      }
+export type DeleteImageMutationHookResult = ReturnType<typeof useDeleteImageMutation>;
+export type DeleteImageMutationResult = Apollo.MutationResult<DeleteImageMutation>;
+export type DeleteImageMutationOptions = Apollo.BaseMutationOptions<DeleteImageMutation, DeleteImageMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -394,6 +443,7 @@ export const MultipleUploadDocument = gql`
     id
     type
     url
+    publicId
   }
 }
     `;
@@ -529,6 +579,7 @@ export const UserImagesDocument = gql`
     id
     type
     url
+    publicId
   }
 }
     `;
@@ -560,3 +611,24 @@ export function useUserImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type UserImagesQueryHookResult = ReturnType<typeof useUserImagesQuery>;
 export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQuery>;
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
+export const namedOperations = {
+  Query: {
+    Me: 'Me',
+    UserImages: 'UserImages'
+  },
+  Mutation: {
+    ChangePassword: 'ChangePassword',
+    DeleteImage: 'DeleteImage',
+    ForgotPassword: 'ForgotPassword',
+    Login: 'Login',
+    Logout: 'Logout',
+    MultipleUpload: 'MultipleUpload',
+    Register: 'Register',
+    SingleUpload: 'SingleUpload'
+  },
+  Fragment: {
+    RegularError: 'RegularError',
+    RegularUser: 'RegularUser',
+    RegularUserResponse: 'RegularUserResponse'
+  }
+}

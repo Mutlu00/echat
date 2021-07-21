@@ -18,7 +18,7 @@ const Profile: React.FC = ({}) => {
           files: null,
         }}
         onSubmit={async ({ files }, { setErrors }) => {
-          await multipleUpload({ variables: { files, type: 'secondary' } });
+          // await multipleUpload({ variables: { files, type: 'secondary' } });
         }}
       >
         {({ values, handleChange, isSubmitting, setFieldValue }) => (
