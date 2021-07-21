@@ -1,3 +1,8 @@
-mutation SingleUpload($file: Upload!) {
-  singleUpload(file: $file)
+mutation SingleUpload($file: Upload!, $type: String!) {
+  singleUpload(file: $file, type: $type) {
+    id
+    type
+    url
+    publicId
+  }
 }

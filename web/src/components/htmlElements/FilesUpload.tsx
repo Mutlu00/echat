@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
   useDeleteImageMutation,
-  useMultipleUploadMutation,
+  // useMultipleUploadMutation,
+  useSingleUploadMutation,
   useUserImagesQuery,
 } from '../../generated/graphql';
 import { isServer } from '../../utils/helpers/isServer';
@@ -25,16 +26,47 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
     skip: isServer(),
     variables: { type: 'secondary' },
   });
-  const [multipleUpload] = useMultipleUploadMutation();
+  // const [multipleUpload] = useMultipleUploadMutation();
+  const [singleUpload] = useSingleUploadMutation();
   const [deleteImage] = useDeleteImageMutation();
+
+  const [progress, setProgress] = useState<number>(0);
+  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     onDrop: async (files) => {
-      setFieldValue('files', files);
-      await multipleUpload({
-        variables: { files, type: 'secondary' },
-      });
+      console.log(files[0]);
+      // setFieldValue('files', files);
+      // await multipleUpload({
+      //   variables: { files, type: 'secondary' },
+      //   context: {
+      //     fetchOptions: {
+      //       useUpload: true,
+      //       onProgress: (ev: ProgressEvent) => {
+      //         console.log(ev)
+      //         setProgress(ev.loaded / ev.total);
+      //       },
+      //       onAbortPossible: (abortHandler: any) => {
+      //         abort = abortHandler;
+      //       }
+      //     },
+      //   },
+      // }).catch((err) => console.log(err));
+      await singleUpload({
+        variables: { file: files[0], type: 'secondary' },
+        context: {
+          fetchOptions: {
+            useUpload: true,
+            onProgress: (ev: ProgressEvent) => {
+              console.log(ev);
+              setProgress(ev.loaded / ev.total);
+            },
+            onAbortPossible: (_: any) => {
+            },
+          },
+        },
+      }).catch((err) => console.log(err));
       refetch();
     },
   });
@@ -42,7 +74,7 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
   return (
     <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
       <label className='block text-sm font-medium text-gray-700'>
-        Cover photo
+        Cover photo <h1>{progress}</h1>
       </label>
 
       <div
@@ -70,6 +102,7 @@ export const FilesUpload: React.FC<FileUploadProps> = ({
           <p className='text-xs text-gray-500'>PNG, JPG, GIF up to 10MB</p>
         </div>
       </div>
+
       <div>
         {files &&
           files.map((file, i) => (

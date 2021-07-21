@@ -3,10 +3,12 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
 import { GRAPHQL_SERVER_URL } from '../../constants';
+import { customFetch } from './fetch';
 
 const link = createUploadLink({
   uri: GRAPHQL_SERVER_URL,
   credentials: 'include',
+  fetch: customFetch as any
 });
 
 const createClient = (ctx: NextPageContext) =>

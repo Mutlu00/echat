@@ -40,7 +40,7 @@ export class ImagesResolver {
   }
 
   @Mutation(() => [Images])
-  @UseMiddleware(isAuth)
+  // @UseMiddleware(isAuth)
   async multipleUpload(
     @Arg('type') type: ImageTypes,
     @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
@@ -50,7 +50,7 @@ export class ImagesResolver {
 
     for (let file of files) {
       const res = await fileUpload(file);
-      console.log(res.secure_url);
+
       await Images.create({
         url: res.secure_url,
         publicId: res.public_id,
@@ -61,6 +61,31 @@ export class ImagesResolver {
 
     const images = await Images.find({ where: { userId, type } });
 
+    console.log(images)
+    return images;
+  }
+
+  @Mutation(() => [Images])
+  // @UseMiddleware(isAuth)
+  async singleUpload(
+    @Arg('type') type: ImageTypes,
+    @Arg('file', () => GraphQLUpload) file: FileUpload,
+    @Ctx() { req }: MyContext
+  ) {
+    // let { userId } = req.session;
+    req
+    let userId: any = 10
+    const res = await fileUpload(file);
+
+    await Images.create({
+      url: res.secure_url,
+      publicId: res.public_id,
+      userId,
+      type,
+    }).save();
+
+    const images = await Images.find({ where: { userId: 10, type } });
+    console.log(images)
     return images;
   }
 
@@ -71,7 +96,7 @@ export class ImagesResolver {
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
-    await this.deleteAllImages()
+
     await Images.delete({ publicId, userId });
 
     return true;

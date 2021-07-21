@@ -44,7 +44,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
-  singleUpload: Scalars['Boolean'];
+  singleUpload: Images;
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Images>;
   deleteImage: Scalars['Boolean'];
@@ -75,6 +75,7 @@ export type MutationChangePasswordArgs = {
 
 export type MutationSingleUploadArgs = {
   file: Scalars['Upload'];
+  type: Scalars['String'];
 };
 
 
@@ -222,12 +223,16 @@ export type RegisterMutation = (
 
 export type SingleUploadMutationVariables = Exact<{
   file: Scalars['Upload'];
+  type: Scalars['String'];
 }>;
 
 
 export type SingleUploadMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'singleUpload'>
+  & { singleUpload: (
+    { __typename?: 'Images' }
+    & Pick<Images, 'id' | 'type' | 'url' | 'publicId'>
+  ) }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -508,8 +513,13 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const SingleUploadDocument = gql`
-    mutation SingleUpload($file: Upload!) {
-  singleUpload(file: $file)
+    mutation SingleUpload($file: Upload!, $type: String!) {
+  singleUpload(file: $file, type: $type) {
+    id
+    type
+    url
+    publicId
+  }
 }
     `;
 export type SingleUploadMutationFn = Apollo.MutationFunction<SingleUploadMutation, SingleUploadMutationVariables>;
@@ -528,6 +538,7 @@ export type SingleUploadMutationFn = Apollo.MutationFunction<SingleUploadMutatio
  * const [singleUploadMutation, { data, loading, error }] = useSingleUploadMutation({
  *   variables: {
  *      file: // value for 'file'
+ *      type: // value for 'type'
  *   },
  * });
  */
