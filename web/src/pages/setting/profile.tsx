@@ -2,7 +2,6 @@ import { Form, Formik } from 'formik';
 import React from 'react';
 import {
   ButtonField,
-  FileUpload,
   FilesUpload,
 } from '../../components/htmlElements/';
 import { Wrapper } from '../../components/Wrapper';
