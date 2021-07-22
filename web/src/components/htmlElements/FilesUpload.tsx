@@ -23,20 +23,25 @@ export const FilesUpload: React.FC = ({}) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     onDrop: async (files) => {
+      console.log('upload');
       await multipleUpload({
         variables: { files, type: 'secondary' },
         context: {
           fetchOptions: {
             useUpload: true,
             onProgress: (ev: ProgressEvent) => {
-              setProgress(Math.floor((100 * ev.loaded) / ev.total));
+              const load = Math.floor((100 * ev.loaded) / ev.total);
+
+              setProgress(load);
+              if (load === 100) setProgress(0);
             },
             onAbortPossible: (_: any) => {},
           },
         },
       });
+
+      console.log('refetch');
       await refetch();
-      setProgress(0);
     },
   });
 
@@ -50,12 +55,12 @@ export const FilesUpload: React.FC = ({}) => {
         {...getRootProps()}
         className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'
       >
-        {progress === 100 && uploadLoading ? (
+        {!progress && uploadLoading ? (
           <div>
             <h1 className='text-gray-700 text-center'>Almost There</h1>
             <Loading />
           </div>
-        ) : progress ? (
+        ) : progress && uploadLoading ? (
           <ProgressBar progress={progress} />
         ) : (
           <div className='space-y-1 text-center'>
