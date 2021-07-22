@@ -7,7 +7,7 @@ import {
   useUserImagesQuery,
 } from '../../generated/graphql';
 import { isServer } from '../../utils/helpers/isServer';
-import { ProgressBar } from '../utils';
+import { Loading, ProgressBar } from '../utils';
 
 export const FilesUpload: React.FC = ({}) => {
   const [progress, setProgress] = useState<number>(0);
@@ -16,7 +16,8 @@ export const FilesUpload: React.FC = ({}) => {
     skip: isServer(),
     variables: { type: 'secondary' },
   });
-  const [multipleUpload] = useMultipleUploadMutation();
+  const [multipleUpload, { loading: uploadLoading }] =
+    useMultipleUploadMutation();
   const [deleteImage] = useDeleteImageMutation();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -49,7 +50,12 @@ export const FilesUpload: React.FC = ({}) => {
         {...getRootProps()}
         className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'
       >
-        {progress ? (
+        {progress === 100 && uploadLoading ? (
+          <div>
+            <h1 className='text-gray-700 text-center'>Almost There</h1>
+            <Loading />
+          </div>
+        ) : progress ? (
           <ProgressBar progress={progress} />
         ) : (
           <div className='space-y-1 text-center'>
@@ -85,16 +91,14 @@ export const FilesUpload: React.FC = ({}) => {
       </div> */}
       <div className='flex flex-wrap'>
         {!loading &&
-          data?.userImages?.map((image) => (
-            <div key={image.url} className='relative'>
-              <img className='' src={image.url} alt='dummy-image' />
+          data?.userImages?.map(({ publicId, url }) => (
+            <div key={url} className='relative'>
+              <img src={url} alt='dummy-image' />
               <button
                 type='button'
                 className='absolute top-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2'
                 onClick={async () => {
-                  await deleteImage({
-                    variables: { publicId: image.publicId },
-                  });
+                  await deleteImage({ variables: { publicId } });
                   refetch();
                 }}
               >

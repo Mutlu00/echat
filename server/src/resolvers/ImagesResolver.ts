@@ -50,7 +50,7 @@ export class ImagesResolver {
 
     for (let file of files) {
       const res = await fileUpload(file);
-      console.log(res.secure_url)
+      console.log(res.secure_url);
       await Images.create({
         url: res.secure_url,
         publicId: res.public_id,
