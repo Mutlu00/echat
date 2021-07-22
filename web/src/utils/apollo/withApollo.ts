@@ -3,12 +3,12 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
 import { GRAPHQL_SERVER_URL } from '../../constants';
-import { customFetch } from './fetch';
+import { customFetch } from './customFetch';
 
 const link = createUploadLink({
   uri: GRAPHQL_SERVER_URL,
   credentials: 'include',
-  fetch: customFetch as any
+  fetch: customFetch as any,
 });
 
 const createClient = (ctx: NextPageContext) =>
@@ -21,20 +21,8 @@ const createClient = (ctx: NextPageContext) =>
           ? ctx?.req?.headers.cookie
           : undefined) || '',
     },
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            userImages: {
-              merge: false,
-            },
-            multiUpload: {
-              merge: false,
-            },
-          },
-        },
-      },
-    }),
+    cache: new InMemoryCache({}),
+    ssrMode: typeof window === 'undefined',
   });
 
 export const withApollo = createWithApollo(createClient);

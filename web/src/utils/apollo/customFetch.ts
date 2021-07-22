@@ -17,6 +17,7 @@ const parseHeaders = (rawHeaders: any) => {
 export const uploadFetch = (url: string, options: any) =>
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
     xhr.onload = () => {
       const opts: any = {
         status: xhr.status,

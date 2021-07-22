@@ -3,38 +3,38 @@ import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
   useDeleteImageMutation,
-  useMultipleUploadMutation,
+  useSingleUploadMutation,
   useUserImagesQuery,
 } from '../../generated/graphql';
 import { isServer } from '../../utils/helpers/isServer';
 import { ProgressBar } from '../utils';
 
-export const FilesUpload: React.FC = ({}) => {
+export const FileUpload: React.FC = ({}) => {
   const [progress, setProgress] = useState<number>(0);
 
   const { data, loading, refetch } = useUserImagesQuery({
     skip: isServer(),
     variables: { type: 'secondary' },
   });
-  const [multipleUpload] = useMultipleUploadMutation();
+
+  const [singleUpload] = useSingleUploadMutation();
   const [deleteImage] = useDeleteImageMutation();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     onDrop: async (files) => {
-      await multipleUpload({
-        variables: { files, type: 'secondary' },
+      await singleUpload({
+        variables: { file: files[0], type: 'secondary' },
         context: {
           fetchOptions: {
             useUpload: true,
             onProgress: (ev: ProgressEvent) => {
-              setProgress(ev.loaded / ev.total);
+              setProgress(Math.floor((100 * ev.loaded) / ev.total));
             },
             onAbortPossible: (_: any) => {},
           },
         },
-      });
-
+      })
       refetch();
       setProgress(0);
     },
@@ -43,7 +43,7 @@ export const FilesUpload: React.FC = ({}) => {
   return (
     <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
       <label className='block text-sm font-medium text-gray-700'>
-        Files Upload
+        File Upload
       </label>
 
       <div
@@ -75,15 +75,6 @@ export const FilesUpload: React.FC = ({}) => {
           </div>
         )}
       </div>
-
-      {/* <div>
-        {files &&
-          files.map((file, i) => (
-            <li className='text-gray-700' key={i}>
-              {`File:${file.name} Type:${file.type} Size:${file.size} bytes`}{' '}
-            </li>
-          ))}
-      </div> */}
       <div className='flex flex-wrap'>
         {!loading &&
           data?.userImages?.map((image) => (

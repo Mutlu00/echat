@@ -1,11 +1,14 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
-import {ButtonField, FilesUpload} from '../../components/htmlElements/';
+import {
+  ButtonField,
+  FileUpload,
+  FilesUpload,
+} from '../../components/htmlElements/';
 import { Wrapper } from '../../components/Wrapper';
 import { withApollo } from '../../utils/apollo/withApollo';
 
 const Profile: React.FC = ({}) => {
-
   return (
     <Wrapper navbar>
       <Formik
@@ -18,7 +21,9 @@ const Profile: React.FC = ({}) => {
       >
         {({ values, handleChange, isSubmitting, setFieldValue }) => (
           <Form>
-            <FilesUpload setFieldValue={setFieldValue} files={values.files} />
+            <FileUpload />
+            <FilesUpload />
+
             <ButtonField text='send' type='submit' loading={isSubmitting} />
           </Form>
         )}

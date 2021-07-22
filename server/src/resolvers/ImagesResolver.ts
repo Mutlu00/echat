@@ -40,7 +40,7 @@ export class ImagesResolver {
   }
 
   @Mutation(() => [Images])
-  // @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth)
   async multipleUpload(
     @Arg('type') type: ImageTypes,
     @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
@@ -61,20 +61,18 @@ export class ImagesResolver {
 
     const images = await Images.find({ where: { userId, type } });
 
-    console.log(images)
     return images;
   }
 
   @Mutation(() => [Images])
-  // @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth)
   async singleUpload(
     @Arg('type') type: ImageTypes,
     @Arg('file', () => GraphQLUpload) file: FileUpload,
     @Ctx() { req }: MyContext
   ) {
-    // let { userId } = req.session;
-    req
-    let userId: any = 10
+    let userId = req.session.userId;
+
     const res = await fileUpload(file);
 
     await Images.create({
@@ -84,8 +82,8 @@ export class ImagesResolver {
       type,
     }).save();
 
-    const images = await Images.find({ where: { userId: 10, type } });
-    console.log(images)
+    const images = await Images.find({ where: { userId: type } });
+
     return images;
   }
 
