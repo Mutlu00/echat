@@ -2,7 +2,11 @@
   "name": "echat",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/Don-Cryptus/graph-auth",
+  "repository": "https://github.com/Don-Cryptus/echat",
   "author": "Don-Cryptus <don.cryptus@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "web": "cd web && yarn && yarn dev",
+    "server": "cd server && yarn && yarn dev"
+  }
 }

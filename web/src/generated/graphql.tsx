@@ -44,7 +44,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
-  singleUpload: Images;
+  singleUpload: Array<Images>;
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Images>;
   deleteImage: Scalars['Boolean'];
@@ -229,10 +229,10 @@ export type SingleUploadMutationVariables = Exact<{
 
 export type SingleUploadMutation = (
   { __typename?: 'Mutation' }
-  & { singleUpload: (
+  & { singleUpload: Array<(
     { __typename?: 'Images' }
     & Pick<Images, 'id' | 'type' | 'url' | 'publicId'>
-  ) }
+  )> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
