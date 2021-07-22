@@ -28,7 +28,7 @@ export const FilesUpload: React.FC = ({}) => {
           fetchOptions: {
             useUpload: true,
             onProgress: (ev: ProgressEvent) => {
-              setProgress(ev.loaded / ev.total);
+              setProgress(Math.floor((100 * ev.loaded) / ev.total));
             },
             onAbortPossible: (_: any) => {},
           },
