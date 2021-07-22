@@ -21,7 +21,7 @@ const Profile: React.FC = ({}) => {
       >
         {({ values, handleChange, isSubmitting, setFieldValue }) => (
           <Form>
-            <FileUpload />
+            {/* <FileUpload type='secondary' /> */}
             <FilesUpload />
 
             <ButtonField text='send' type='submit' loading={isSubmitting} />

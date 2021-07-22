@@ -61,7 +61,7 @@ const PgSession = connectPgSimple(session);
     uploads: false,
     introspection: true,
   });
-  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
+  app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
   server.applyMiddleware({ app, cors: false });
 
   app.listen(parseInt(process.env.SERVER_PORT!), () => {

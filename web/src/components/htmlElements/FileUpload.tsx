@@ -9,12 +9,16 @@ import {
 import { isServer } from '../../utils/helpers/isServer';
 import { ProgressBar } from '../utils';
 
-export const FileUpload: React.FC = ({}) => {
+type FileUploadProps = {
+  type: string;
+};
+
+export const FileUpload: React.FC<FileUploadProps> = ({ type }) => {
   const [progress, setProgress] = useState<number>(0);
 
   const { data, loading, refetch } = useUserImagesQuery({
     skip: isServer(),
-    variables: { type: 'secondary' },
+    variables: { type },
   });
 
   const [singleUpload] = useSingleUploadMutation();
@@ -24,7 +28,7 @@ export const FileUpload: React.FC = ({}) => {
     accept: 'image/*',
     onDrop: async (files) => {
       await singleUpload({
-        variables: { file: files[0], type: 'secondary' },
+        variables: { file: files[0], type },
         context: {
           fetchOptions: {
             useUpload: true,
@@ -34,7 +38,7 @@ export const FileUpload: React.FC = ({}) => {
             onAbortPossible: (_: any) => {},
           },
         },
-      })
+      });
       refetch();
       setProgress(0);
     },

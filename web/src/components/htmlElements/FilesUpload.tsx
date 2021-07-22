@@ -34,8 +34,7 @@ export const FilesUpload: React.FC = ({}) => {
           },
         },
       });
-
-      refetch();
+      await refetch();
       setProgress(0);
     },
   });
